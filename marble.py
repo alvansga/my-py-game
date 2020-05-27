@@ -58,13 +58,17 @@ def main():
     gambarBG()
     xmouse = 0
     ymouse = 0
-    prevselect = None
+    prevselect = (None,None)
     marbles = []
     mousehold = False
+    mouserelease = False
     for i in range(LEBARPAPAN):
         marbles.append([False] * TINGGIPAPAN)
-    #level 1
     
+    #level 1
+    marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
+    marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
+    marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
 
     while True:
         mouseklik = False
@@ -75,15 +79,11 @@ def main():
         #     for j in range(TINGGIPAPAN):
         #         gambarMarble(MARBLE,REAL,i,j)
         ########################
-        if not mousehold == True:
-            gambarMarble(MARBLE,REAL,int(LEBARPAPAN/2)-2,int(TINGGIPAPAN/2),marbles)
-        gambarMarble(MARBLE,REAL,int(LEBARPAPAN/2)-1,int(TINGGIPAPAN/2),marbles)
+        refreshMarble(marbles)
         
-        gambarMarble(MARBLE,REAL,int(LEBARPAPAN/2)+1,int(TINGGIPAPAN/2),marbles)
-        
-        # marbles[0][0]=True
-        # marbles[1][0]=True
-        # marbles[3][0]=True
+        # if prevselect != None and not mousehold == True:
+        #     left,top = prevselect
+
         
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
@@ -91,20 +91,20 @@ def main():
                 sys.exit()
             
             elif event.type == MOUSEMOTION and mousehold == True:
-                print ("mouse gerak")
+                print ("mouse hold")
                 xmouse, ymouse = event.pos
-                gambarfreeMarble(MARBLE,REAL,xmouse,ymouse,marbles)
             
             elif event.type == MOUSEBUTTONUP:
-                print ("mouse klik")
+                print ("mouse lepas")
                 xmouse, ymouse = event.pos
-                
                 mousehold = False
+                mouserelease = True
+                print (marbles)
 
             elif event.type == MOUSEBUTTONDOWN:
                 xmouse, ymouse = event.pos
                 mouseklik = True
-                print("hold")
+                print("mouse tekan")
 
             elif event.type == MOUSEMOTION:
                 xmouse, ymouse = event.pos
@@ -115,14 +115,23 @@ def main():
             gambarfreeMarble(MARBLE,REAL,xmouse,ymouse,marbles)
         else:
             boxx,boxy = sentuhMarble(xmouse,ymouse)
+            if mouserelease == True:
+                mouserelease = False
+                cekmarblerelease(boxx,boxy,prevselect,marbles)
+                # kembalikan marble
+                
+
+            
             if boxx != None and boxy != None:
                 # print("tersentuh")
                 if marbles[boxx][boxy]:
                     gambarRing(boxx,boxy)
                 if marbles[boxx][boxy] and mouseklik == True:
                     mousehold = True
+                    prevselect = (boxx,boxy)
+                    marbles[boxx][boxy] = False 
 
-                
+        
                 
 
 
@@ -151,12 +160,11 @@ def gambarWadah(boxx,boxy):
     pygame.draw.circle(DISPLAYSURF,BOARDCOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE+10)
     # pygame.draw.circle(DISPLAYSURF,BOARDCOLOR2,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE-3)
 
-def gambarMarble(bentuk,asli,boxx,boxy,marblelist):
+def gambarMarble(bentuk,asli,boxx,boxy):
     left,top = lefttopkoordinatbox(boxx,boxy)
     if asli == REAL:
         pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(left+JARI2MARBLE+2,top+JARI2MARBLE+2),JARI2MARBLE)
         pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE)
-        marblelist[boxx][boxy] = True
     elif asli == SHADOW:
         pygame.draw.circle(DISPLAYSURF,SHADOWCOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE)
 
@@ -182,11 +190,37 @@ def sentuhMarble(x,y):
                 return (boxx,boxy)
     return (None,None)
 
-# def refreshboard(marble,kosong):
-#     for boxx in range(LEBARPAPAN):
-#         for boxy in range(TINGGIPAPAN):
-#             left, top = lefttopkoordinatbox(boxx,boxy)
-#             if 
+def refreshMarble(marbles):
+    for i in range(LEBARPAPAN):
+        for j in range(TINGGIPAPAN):
+            if marbles[i][j] == True:
+                gambarMarble(MARBLE,REAL,i,j)
+
+def cekmarblerelease(boxx,boxy,prevselect,marbles):
+    oldboxx,oldboxy = prevselect
+    #               kanan                                           
+    
+    
+    if boxx == None and boxy == None :
+        boxx,boxy = prevselect
+        marbles[boxx][boxy] = True 
+    if marbles[boxx][boxy] == True :
+        boxx,boxy = prevselect
+        marbles[boxx][boxy] = True 
+    else:
+        if (boxx == oldboxx + 1 + 1 and boxy == oldboxy and marbles[oldboxx + 1][oldboxy] == True) :
+            marbles[boxx][boxy] = True
+            marbles[oldboxx + 1][oldboxy] = False
+            marbles[oldboxx + 1 + 1][oldboxy] = False
+        #               left
+        elif (boxx == oldboxx - 1 - 1 and boxy == oldboxy and marbles[oldboxx - 1][oldboxy] == True):
+            marbles[boxx][boxy] = True
+            marbles[oldboxx - 1][oldboxy] = False
+            marbles[oldboxx - 1 - 1][oldboxy] = False
+        else:
+            boxx,boxy = prevselect
+            marbles[boxx][boxy] = True 
+    return marbles
 
 if __name__ == '__main__':
     main()
