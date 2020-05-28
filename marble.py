@@ -32,6 +32,8 @@ UNGU        = (200, 10,255)
 LIMEHIJAU   = (150,255,  0)
 BIRU        = (170,100,255)
 BIRUTUA     = (100,  0,150)
+MERAH       = (255,  0,  0)
+KUNING      = (255,255,  0)
 
 BGCOLOR1 = UNGU
 BGCOLOR2 = LIMEHIJAU
@@ -65,7 +67,7 @@ def main():
 
     #set level
     #set marble tabel LEBARPAPAN x TINGGIPAPAN
-    level = 3
+    level = 4
     marbles = setLevel(level)
 
     while True:
@@ -247,6 +249,14 @@ def gambarBG(level):
         for i in range(7):
             for j in range(7):
                 gambarWadah(i,j)
+    elif level == 4:
+        DISPLAYSURF.fill(BGCOLOR1)
+        for i in range(7):
+            for j in range(7):
+                gambarWadah2(i,j)
+        for i in range(7):
+            for j in range(7):
+                gambarWadah(i,j)
     else:
         #default level 1
         DISPLAYSURF.fill(BGCOLOR1)
@@ -287,6 +297,24 @@ def setLevel(level):
         marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)-1] = True
 
         marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-2] = True
+    elif level == 4:
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)+2] = True
+
+        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)+1] = True
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)+1] = True
+        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)+1] = True
+
+        marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
+        # marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)+2][int(TINGGIPAPAN/2)] = True
+
+        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)-1] = True
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-1] = True
+        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)-1] = True
+
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-2] = True
         #===========================================
         # ========= tambah level disini ===========
         #===========================================
@@ -309,7 +337,7 @@ def tampilReset(x,y,mouseklik):
     if teksRectObj.collidepoint(x,y):
         fontsize = 20
         settingFont = pygame.font.Font('freesansbold.ttf',fontsize)
-        permukaanteks = settingFont.render('Reset',True,WINTEKSCOLOR)
+        permukaanteks = settingFont.render('Reset',True,KUNING)
         teksRectObj = permukaanteks.get_rect()
         teksRectObj.center = (int(LEBARWINDOW/10),int(TINGGIWINDOW/20))
         DISPLAYSURF.blit(permukaanteks,teksRectObj)
