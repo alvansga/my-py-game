@@ -41,7 +41,8 @@ RINGCOLOR = PUTIH
 SHADOWCOLOR = KUNING
 BOARDCOLOR = BIRU
 BOARDCOLOR2 = BIRUTUA
-
+WINTEKSCOLOR = PUTIH
+WINBGTEKSCOLOR = BIRUTUA
 
 MARBLE = 'marble'
 SHMARBLE = 'shmarble'
@@ -81,10 +82,6 @@ def main():
         ########################
         refreshMarble(marbles)
         
-        # if prevselect != None and not mousehold == True:
-        #     left,top = prevselect
-
-        
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
                 pygame.quit()
@@ -99,7 +96,6 @@ def main():
                 xmouse, ymouse = event.pos
                 mousehold = False
                 mouserelease = True
-                print (marbles)
 
             elif event.type == MOUSEBUTTONDOWN:
                 xmouse, ymouse = event.pos
@@ -115,13 +111,16 @@ def main():
             gambarfreeMarble(MARBLE,REAL,xmouse,ymouse,marbles)
         else:
             boxx,boxy = sentuhMarble(xmouse,ymouse)
+            print(boxx,boxy)
             if mouserelease == True:
+                print(marbles)
                 mouserelease = False
-                cekmarblerelease(boxx,boxy,prevselect,marbles)
+                # if boxx != None and boxy != None:
+                marbles = cekmarblerelease(boxx,boxy,prevselect,marbles)
+                prevselect = (None,None)
+                print(marbles)
                 # kembalikan marble
                 
-
-            
             if boxx != None and boxy != None:
                 # print("tersentuh")
                 if marbles[boxx][boxy]:
@@ -131,10 +130,9 @@ def main():
                     prevselect = (boxx,boxy)
                     marbles[boxx][boxy] = False 
 
-        
-                
-
-
+        # print("jumlah marble: ",hitungmarbles(marbles))
+        if hitungmarbles(marbles) == 0:
+            wincelebration()
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
@@ -199,8 +197,6 @@ def refreshMarble(marbles):
 def cekmarblerelease(boxx,boxy,prevselect,marbles):
     oldboxx,oldboxy = prevselect
     #               kanan                                           
-    
-    
     if boxx == None and boxy == None :
         boxx,boxy = prevselect
         marbles[boxx][boxy] = True 
@@ -208,19 +204,33 @@ def cekmarblerelease(boxx,boxy,prevselect,marbles):
         boxx,boxy = prevselect
         marbles[boxx][boxy] = True 
     else:
-        if (boxx == oldboxx + 1 + 1 and boxy == oldboxy and marbles[oldboxx + 1][oldboxy] == True) :
+        if (boxx == oldboxx + 2 and boxy == oldboxy and marbles[oldboxx + 1][oldboxy] == True) :
+            print('a')
             marbles[boxx][boxy] = True
             marbles[oldboxx + 1][oldboxy] = False
-            marbles[oldboxx + 1 + 1][oldboxy] = False
         #               left
-        elif (boxx == oldboxx - 1 - 1 and boxy == oldboxy and marbles[oldboxx - 1][oldboxy] == True):
+        elif (boxx == oldboxx - 2 and boxy == oldboxy and marbles[oldboxx - 1][oldboxy] == True):
+            print('b')
             marbles[boxx][boxy] = True
             marbles[oldboxx - 1][oldboxy] = False
-            marbles[oldboxx - 1 - 1][oldboxy] = False
         else:
+            print('c')
             boxx,boxy = prevselect
             marbles[boxx][boxy] = True 
     return marbles
+
+def hitungmarbles(marbles):
+    jum = 0
+    for i in marbles:
+        if i == True:
+            jum += 1
+    return jum
+
+def wincelebration():
+    settingFont = pygame.font.Font('freesansbold.ttf',32)
+    permukaanteks = settingFont.render('Fantastic!',True,WINTEKSCOLOR,WINBGTEKSCOLOR)
+    teksRectObj = permukaanteks.get_rect()
+    teksRectObj.center = (int(LEBARWINDOW/2),int(TINGGIWINDOW/2))
 
 if __name__ == '__main__':
     main()
