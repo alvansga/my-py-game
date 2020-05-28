@@ -67,7 +67,8 @@ def main():
 
     #set level
     #set marble tabel LEBARPAPAN x TINGGIPAPAN
-    level = 4
+    levellist = [1,2,3,4,5]
+    level = random.choice(levellist)
     marbles = setLevel(level)
 
     while True:
@@ -103,6 +104,11 @@ def main():
             #set level
             marbles = setLevel(level)
             win = False
+        if tampilNewLevel(xmouse,ymouse,mouseklik) == True:
+            #set level
+            level = random.choice(levellist)
+            marbles = setLevel(level)
+            win = False
 
         if win == True:
             wincelebration(randomcongrats)
@@ -113,9 +119,7 @@ def main():
             else:
                 boxx,boxy = sentuhMarble(xmouse,ymouse)
                 if mouserelease == True:
-                    print(marbles)
                     mouserelease = False
-                    # if boxx != None and boxy != None:
                     marbles = cekmarblerelease(boxx,boxy,prevselect,marbles)
                     if marbles != None:
                         if hitungmarbles(marbles) == 1:
@@ -123,11 +127,8 @@ def main():
                             print('menang')
                             randomcongrats = random.choice(congratsteks)
                         prevselect = (None,None)
-                    print(marbles)
-                    # kembalikan marble
                     
                 if boxx != None and boxy != None:
-                    # print("tersentuh")
                     if marbles[boxx][boxy]:
                         gambarObjek(RING,boxx,boxy)
                     if marbles[boxx][boxy] and mouseklik == True:
@@ -257,6 +258,14 @@ def gambarBG(level):
         for i in range(7):
             for j in range(7):
                 gambarWadah(i,j)
+    elif level == 5:
+        DISPLAYSURF.fill(BGCOLOR1)
+        for i in range(7):
+            for j in range(7):
+                gambarWadah2(i,j)
+        for i in range(7):
+            for j in range(7):
+                gambarWadah(i,j)
     else:
         #default level 1
         DISPLAYSURF.fill(BGCOLOR1)
@@ -315,6 +324,12 @@ def setLevel(level):
         marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)-1] = True
 
         marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-2] = True
+
+    elif level == 5:
+        for i in range(LEBARPAPAN):
+            for j in range(TINGGIPAPAN):
+                marbles[i][j] = True
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)] = False
         #===========================================
         # ========= tambah level disini ===========
         #===========================================
@@ -332,14 +347,14 @@ def tampilReset(x,y,mouseklik):
     settingFont = pygame.font.Font('freesansbold.ttf',fontsize)
     permukaanteks = settingFont.render('Reset',True,WINTEKSCOLOR)
     teksRectObj = permukaanteks.get_rect()
-    teksRectObj.center = (int(LEBARWINDOW/10),int(TINGGIWINDOW/20))
-    
+    teksRectObj.topleft = (0,0)
+
     if teksRectObj.collidepoint(x,y):
         fontsize = 20
         settingFont = pygame.font.Font('freesansbold.ttf',fontsize)
         permukaanteks = settingFont.render('Reset',True,KUNING)
         teksRectObj = permukaanteks.get_rect()
-        teksRectObj.center = (int(LEBARWINDOW/10),int(TINGGIWINDOW/20))
+        teksRectObj.topleft = (0,0)
         DISPLAYSURF.blit(permukaanteks,teksRectObj)
         if mouseklik == True:
             return True
@@ -347,6 +362,24 @@ def tampilReset(x,y,mouseklik):
             return False
     DISPLAYSURF.blit(permukaanteks,teksRectObj)
     
+def tampilNewLevel(x,y,mouseklik):
+    fontsize = 18
+    settingFont = pygame.font.Font('freesansbold.ttf',fontsize)
+    permukaanteks = settingFont.render('New Level',True,WINTEKSCOLOR)
+    teksRectObj = permukaanteks.get_rect()
+    teksRectObj.topright = (480,0)
+    if teksRectObj.collidepoint(x,y):
+        fontsize = 20
+        settingFont = pygame.font.Font('freesansbold.ttf',fontsize)
+        permukaanteks = settingFont.render('New Level',True,KUNING)
+        teksRectObj = permukaanteks.get_rect()
+        teksRectObj.topright = (480,0)
+        DISPLAYSURF.blit(permukaanteks,teksRectObj)
+        if mouseklik == True:
+            return True
+        else:
+            return False
+    DISPLAYSURF.blit(permukaanteks,teksRectObj)
 
 if __name__ == '__main__':
     main()
