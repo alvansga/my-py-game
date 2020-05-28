@@ -65,7 +65,7 @@ def main():
 
     #set level
     #set marble tabel LEBARPAPAN x TINGGIPAPAN
-    level = 2
+    level = 3
     marbles = setLevel(level)
 
     while True:
@@ -239,6 +239,14 @@ def gambarBG(level):
         for i in range(1,6):
             for j in range(1,6):
                 gambarWadah(i,j)
+    elif level == 3:
+        DISPLAYSURF.fill(BGCOLOR1)
+        for i in range(7):
+            for j in range(7):
+                gambarWadah2(i,j)
+        for i in range(7):
+            for j in range(7):
+                gambarWadah(i,j)
     else:
         #default level 1
         DISPLAYSURF.fill(BGCOLOR1)
@@ -267,6 +275,18 @@ def setLevel(level):
         marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)] = True
         marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-1] = True
         marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)+1] = True
+    elif level == 3:
+        marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)+2][int(TINGGIPAPAN/2)] = True
+
+        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)-1] = True
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-1] = True
+        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)-1] = True
+
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-2] = True
         #===========================================
         # ========= tambah level disini ===========
         #===========================================
