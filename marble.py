@@ -17,6 +17,9 @@ JARI2MARBLE = int (UKURANMARBLE* 0.5)
 UKURANCELAH = 10
 LEBARPAPAN = 7
 TINGGIPAPAN = 1
+# LEBARPAPAN = 1
+# TINGGIPAPAN = 7
+
 
 #ukuran margin
 XMARGIN = int((LEBARWINDOW - (LEBARPAPAN * (UKURANMARBLE + UKURANCELAH))) / 2)
@@ -64,7 +67,7 @@ def main():
     mousehold = False
     mouserelease = False
     win = False
-    congratsteks = ['Fantastic!','Magnificent!','Amazing!','Well Played!','Awesome!']
+    congratsteks = ['Fantastic!','Magnificent!','Amazing!','Well Played!','Awesome!','Good Game!','Well Done!']
     randomcongrats = ''
     for i in range(LEBARPAPAN):
         marbles.append([False] * TINGGIPAPAN)
@@ -166,7 +169,6 @@ def gambarWadah2(boxx,boxy):
 def gambarWadah(boxx,boxy):
     left,top = lefttopkoordinatbox(boxx,boxy)
     pygame.draw.circle(DISPLAYSURF,BOARDCOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE+10)
-    # pygame.draw.circle(DISPLAYSURF,BOARDCOLOR2,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE-3)
 
 def gambarMarble(bentuk,asli,boxx,boxy):
     left,top = lefttopkoordinatbox(boxx,boxy)
@@ -238,17 +240,17 @@ def cekmarblerelease(boxx,boxy,prevselect,marbles):
 
 def hitungmarbles(marbles):
     jum = 0
-    for i in marbles:
-        if i == [True]:
+    for i in sum(marbles,[]):
+        if i == True:
             jum += 1
     print(jum)
     return jum
 
 def wincelebration(randomcongrats):
-    settingFont = pygame.font.Font('freesansbold.ttf',32)
+    settingFont = pygame.font.Font('freesansbold.ttf',48)
     permukaanteks = settingFont.render(randomcongrats,True,WINTEKSCOLOR)
     teksRectObj = permukaanteks.get_rect()
-    teksRectObj.center = (int(LEBARWINDOW/2),int(TINGGIWINDOW/2))
+    teksRectObj.center = (int(LEBARWINDOW/2),int(TINGGIWINDOW/4))
 
     DISPLAYSURF.blit(permukaanteks,teksRectObj)
 
