@@ -74,6 +74,10 @@ def main():
     marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
     marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
 
+    # marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-2] = True
+    # marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-1] = True
+    # marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)+1] = True
+
     while True:
         mouseklik = False
         DISPLAYSURF.fill(BGCOLOR)
@@ -121,10 +125,12 @@ def main():
                     mouserelease = False
                     # if boxx != None and boxy != None:
                     marbles = cekmarblerelease(boxx,boxy,prevselect,marbles)
-                    if hitungmarbles(marbles) == 1:
-                        win = True
-                        randomcongrats = random.choice(congratsteks)
-                    prevselect = (None,None)
+                    if marbles != None:
+                        if hitungmarbles(marbles) == 1:
+                            win = True
+                            print('menang')
+                            randomcongrats = random.choice(congratsteks)
+                        prevselect = (None,None)
                     print(marbles)
                     # kembalikan marble
                     
@@ -199,8 +205,9 @@ def refreshMarble(marbles):
                 gambarMarble(MARBLE,REAL,i,j)
 
 def cekmarblerelease(boxx,boxy,prevselect,marbles):
-    oldboxx,oldboxy = prevselect
-    #               kanan                                           
+    if prevselect == (None,None):
+        return marbles
+    oldboxx,oldboxy = prevselect                               
     if boxx == None and boxy == None :
         boxx,boxy = prevselect
         marbles[boxx][boxy] = True 
@@ -208,17 +215,23 @@ def cekmarblerelease(boxx,boxy,prevselect,marbles):
         boxx,boxy = prevselect
         marbles[boxx][boxy] = True 
     else:
+        #               kanan            
         if (boxx == oldboxx + 2 and boxy == oldboxy and marbles[oldboxx + 1][oldboxy] == True) :
-            print('a')
             marbles[boxx][boxy] = True
             marbles[oldboxx + 1][oldboxy] = False
-        #               left
+        #               kiri
         elif (boxx == oldboxx - 2 and boxy == oldboxy and marbles[oldboxx - 1][oldboxy] == True):
-            print('b')
             marbles[boxx][boxy] = True
             marbles[oldboxx - 1][oldboxy] = False
+        #               atas
+        elif (boxx == oldboxx  and boxy == oldboxy + 2 and marbles[oldboxx][oldboxy  + 1] == True):
+            marbles[boxx][boxy] = True
+            marbles[oldboxx][oldboxy + 1] = False
+        #               bawah
+        elif (boxx == oldboxx  and boxy == oldboxy - 2 and marbles[oldboxx][oldboxy  - 1] == True):
+            marbles[boxx][boxy] = True
+            marbles[oldboxx][oldboxy - 1] = False
         else:
-            print('c')
             boxx,boxy = prevselect
             marbles[boxx][boxy] = True 
     return marbles
