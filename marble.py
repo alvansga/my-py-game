@@ -5,7 +5,7 @@
 # start date 26 mei 2020
 # finish date 26 juni 2020
 
-import pygame,sys
+import pygame,sys,random
 from pygame.locals import *
 
 FPS = 60
@@ -42,7 +42,7 @@ SHADOWCOLOR = KUNING
 BOARDCOLOR = BIRU
 BOARDCOLOR2 = BIRUTUA
 WINTEKSCOLOR = PUTIH
-WINBGTEKSCOLOR = BIRUTUA
+WINBGTEKSCOLOR = None
 
 MARBLE = 'marble'
 SHMARBLE = 'shmarble'
@@ -63,6 +63,9 @@ def main():
     marbles = []
     mousehold = False
     mouserelease = False
+    win = False
+    congratsteks = ['Fantastic!','Magnificent!','Amazing!','Well Played!','Awesome!']
+    randomcongrats = ''
     for i in range(LEBARPAPAN):
         marbles.append([False] * TINGGIPAPAN)
     
@@ -105,34 +108,35 @@ def main():
             elif event.type == MOUSEMOTION:
                 xmouse, ymouse = event.pos
                 
-        # CURSOR MARBLE
-        if mousehold == True:
-            xmouse, ymouse = pygame.mouse.get_pos()
-            gambarfreeMarble(MARBLE,REAL,xmouse,ymouse,marbles)
+        if win == True:
+            wincelebration(randomcongrats)
         else:
-            boxx,boxy = sentuhMarble(xmouse,ymouse)
-            print(boxx,boxy)
-            if mouserelease == True:
-                print(marbles)
-                mouserelease = False
-                # if boxx != None and boxy != None:
-                marbles = cekmarblerelease(boxx,boxy,prevselect,marbles)
-                prevselect = (None,None)
-                print(marbles)
-                # kembalikan marble
-                
-            if boxx != None and boxy != None:
-                # print("tersentuh")
-                if marbles[boxx][boxy]:
-                    gambarRing(boxx,boxy)
-                if marbles[boxx][boxy] and mouseklik == True:
-                    mousehold = True
-                    prevselect = (boxx,boxy)
-                    marbles[boxx][boxy] = False 
+            if mousehold == True:
+                xmouse, ymouse = pygame.mouse.get_pos()
+                gambarfreeMarble(MARBLE,REAL,xmouse,ymouse,marbles)
+            else:
+                boxx,boxy = sentuhMarble(xmouse,ymouse)
+                if mouserelease == True:
+                    print(marbles)
+                    mouserelease = False
+                    # if boxx != None and boxy != None:
+                    marbles = cekmarblerelease(boxx,boxy,prevselect,marbles)
+                    if hitungmarbles(marbles) == 1:
+                        win = True
+                        randomcongrats = random.choice(congratsteks)
+                    prevselect = (None,None)
+                    print(marbles)
+                    # kembalikan marble
+                    
+                if boxx != None and boxy != None:
+                    # print("tersentuh")
+                    if marbles[boxx][boxy]:
+                        gambarRing(boxx,boxy)
+                    if marbles[boxx][boxy] and mouseklik == True:
+                        mousehold = True
+                        prevselect = (boxx,boxy)
+                        marbles[boxx][boxy] = False 
 
-        # print("jumlah marble: ",hitungmarbles(marbles))
-        if hitungmarbles(marbles) == 0:
-            wincelebration()
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
@@ -222,15 +226,18 @@ def cekmarblerelease(boxx,boxy,prevselect,marbles):
 def hitungmarbles(marbles):
     jum = 0
     for i in marbles:
-        if i == True:
+        if i == [True]:
             jum += 1
+    print(jum)
     return jum
 
-def wincelebration():
+def wincelebration(randomcongrats):
     settingFont = pygame.font.Font('freesansbold.ttf',32)
-    permukaanteks = settingFont.render('Fantastic!',True,WINTEKSCOLOR,WINBGTEKSCOLOR)
+    permukaanteks = settingFont.render(randomcongrats,True,WINTEKSCOLOR)
     teksRectObj = permukaanteks.get_rect()
     teksRectObj.center = (int(LEBARWINDOW/2),int(TINGGIWINDOW/2))
+
+    DISPLAYSURF.blit(permukaanteks,teksRectObj)
 
 if __name__ == '__main__':
     main()
