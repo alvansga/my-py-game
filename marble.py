@@ -34,15 +34,18 @@ BIRU        = (170,100,255)
 BIRUTUA     = (100,  0,150)
 MERAH       = (255,  0,  0)
 KUNING      = (255,255,  0)
+HITAM       = (  0,  0,  0)
+ABU2        = ( 10, 10, 10)
+ABU2_1      = ( 20, 20, 20)
 
-BGCOLOR1 = UNGU
-BGCOLOR2 = LIMEHIJAU
+BGCOLOR1 = HITAM
+BGCOLOR2 = ABU2
 
-MARBLECOLOR = JINGGA
-MARBLECOLOR2 = JINGGATUA
-RINGCOLOR = PUTIH
-BOARDCOLOR = BIRU
-BOARDCOLOR2 = BIRUTUA
+MARBLECOLOR = ABU2_1
+MARBLECOLOR2 = HITAM
+RINGCOLOR = ABU2
+BOARDCOLOR = HITAM
+BOARDCOLOR2 = ABU2
 WINTEKSCOLOR = PUTIH
 
 # gambar objek
@@ -330,6 +333,10 @@ def setLevel(level):
             for j in range(TINGGIPAPAN):
                 marbles[i][j] = True
         marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)] = False
+        marbles[0][0] = False
+        marbles[6][0] = False
+        marbles[6][6] = False
+        marbles[0][6] = False
         #===========================================
         # ========= tambah level disini ===========
         #===========================================
@@ -344,14 +351,14 @@ def setLevel(level):
 
 def tampilReset(x,y,mouseklik):
     fontsize = 18
-    settingFont = pygame.font.Font('freesansbold.ttf',fontsize)
+    settingFont = pygame.font.SysFont('Arial.ttf',fontsize)
     permukaanteks = settingFont.render('Reset',True,WINTEKSCOLOR)
     teksRectObj = permukaanteks.get_rect()
     teksRectObj.topleft = (0,0)
 
     if teksRectObj.collidepoint(x,y):
         fontsize = 20
-        settingFont = pygame.font.Font('freesansbold.ttf',fontsize)
+        settingFont = pygame.font.SysFont('Arial.ttf',fontsize)
         permukaanteks = settingFont.render('Reset',True,KUNING)
         teksRectObj = permukaanteks.get_rect()
         teksRectObj.topleft = (0,0)
@@ -364,14 +371,14 @@ def tampilReset(x,y,mouseklik):
     
 def tampilNewLevel(x,y,mouseklik):
     fontsize = 18
-    settingFont = pygame.font.Font('freesansbold.ttf',fontsize)
-    permukaanteks = settingFont.render('New Level',True,WINTEKSCOLOR)
+    settingFont = pygame.font.SysFont('Calibri.ttf',fontsize)
+    permukaanteks = settingFont.render('Generate New Level',True,WINTEKSCOLOR)
     teksRectObj = permukaanteks.get_rect()
     teksRectObj.topright = (480,0)
     if teksRectObj.collidepoint(x,y):
         fontsize = 20
-        settingFont = pygame.font.Font('freesansbold.ttf',fontsize)
-        permukaanteks = settingFont.render('New Level',True,KUNING)
+        settingFont = pygame.font.SysFont('Calibri.ttf',fontsize)
+        permukaanteks = settingFont.render('Generate New Level',True,KUNING)
         teksRectObj = permukaanteks.get_rect()
         teksRectObj.topright = (480,0)
         DISPLAYSURF.blit(permukaanteks,teksRectObj)
