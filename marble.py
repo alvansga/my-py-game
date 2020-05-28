@@ -11,15 +11,15 @@ from pygame.locals import *
 FPS = 60
 LEBARWINDOW = 480
 TINGGIWINDOW = 480
-LAJUPINDAH = 10
+
 UKURANMARBLE = 36
 JARI2MARBLE = int (UKURANMARBLE* 0.5)
 UKURANCELAH = 10
+
 LEBARPAPAN = 7
-TINGGIPAPAN = 1
+TINGGIPAPAN = 7
 # LEBARPAPAN = 1
 # TINGGIPAPAN = 7
-
 
 #ukuran margin
 XMARGIN = int((LEBARWINDOW - (LEBARPAPAN * (UKURANMARBLE + UKURANCELAH))) / 2)
@@ -35,22 +35,19 @@ KUNING      = (255,230,  0)
 BIRU        = (170,100,255)
 BIRUTUA     = (100,  0,150)
 
-REAL,SHADOW = 0,1
-
 BGCOLOR = UNGU
 MARBLECOLOR = JINGGA
 MARBLECOLOR2 = JINGGATUA
 RINGCOLOR = PUTIH
-SHADOWCOLOR = KUNING
 BOARDCOLOR = BIRU
 BOARDCOLOR2 = BIRUTUA
 WINTEKSCOLOR = PUTIH
 WINBGTEKSCOLOR = None
 
+# gambar objek
 MARBLE = 'marble'
-SHMARBLE = 'shmarble'
+CURMARBLE = 'curmarble'
 RING = 'ring'
-
 
 def main():
     global FPSCLOCK, DISPLAYSURF
@@ -58,38 +55,27 @@ def main():
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((LEBARWINDOW,TINGGIWINDOW))
     pygame.display.set_caption('Marbles')
-    DISPLAYSURF.fill(BGCOLOR)
-    gambarBG()
+
     xmouse = 0
     ymouse = 0
     prevselect = (None,None)
     marbles = []
     mousehold = False
-    mouserelease = False
     win = False
     congratsteks = ['Fantastic!','Magnificent!','Amazing!','Well Played!','Awesome!','Good Game!','Well Done!']
     randomcongrats = ''
+
+    #set marble tabel LEBARPAPAN x TINGGIPAPAN
     for i in range(LEBARPAPAN):
         marbles.append([False] * TINGGIPAPAN)
     
-    #level 1
-    marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
-    marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
-    marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
-
-    # marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-2] = True
-    # marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-1] = True
-    # marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)+1] = True
+    #set level
+    marbles = setLevel(2,marbles)
 
     while True:
         mouseklik = False
-        DISPLAYSURF.fill(BGCOLOR)
+        mouserelease = False
         gambarBG()
-        # tampil semua marble ########
-        # for i in range(LEBARPAPAN):
-        #     for j in range(TINGGIPAPAN):
-        #         gambarMarble(MARBLE,REAL,i,j)
-        ########################
         refreshMarble(marbles)
         
         for event in pygame.event.get():
@@ -120,7 +106,7 @@ def main():
         else:
             if mousehold == True:
                 xmouse, ymouse = pygame.mouse.get_pos()
-                gambarfreeMarble(MARBLE,REAL,xmouse,ymouse,marbles)
+                gambarObjek(CURMARBLE,xmouse,ymouse)
             else:
                 boxx,boxy = sentuhMarble(xmouse,ymouse)
                 if mouserelease == True:
@@ -140,7 +126,7 @@ def main():
                 if boxx != None and boxy != None:
                     # print("tersentuh")
                     if marbles[boxx][boxy]:
-                        gambarRing(boxx,boxy)
+                        gambarObjek(RING,boxx,boxy)
                     if marbles[boxx][boxy] and mouseklik == True:
                         mousehold = True
                         prevselect = (boxx,boxy)
@@ -155,6 +141,7 @@ def lefttopkoordinatbox(boxx,boxy):
     return (left,top)
 
 def gambarBG():
+    DISPLAYSURF.fill(BGCOLOR)
     for i in range(LEBARPAPAN):
         for j in range(TINGGIPAPAN):
             gambarWadah2(i,j)
@@ -170,26 +157,16 @@ def gambarWadah(boxx,boxy):
     left,top = lefttopkoordinatbox(boxx,boxy)
     pygame.draw.circle(DISPLAYSURF,BOARDCOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE+10)
 
-def gambarMarble(bentuk,asli,boxx,boxy):
+def gambarObjek(bentuk,boxx,boxy):
     left,top = lefttopkoordinatbox(boxx,boxy)
-    if asli == REAL:
+    if bentuk == MARBLE:
         pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(left+JARI2MARBLE+2,top+JARI2MARBLE+2),JARI2MARBLE)
         pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE)
-    elif asli == SHADOW:
-        pygame.draw.circle(DISPLAYSURF,SHADOWCOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE)
-
-def gambarfreeMarble(bentuk,asli,left,top,marblelist):
-    if asli == REAL:
-        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(left+2,top+2),JARI2MARBLE)
-        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(left,top),JARI2MARBLE)
-        # marblelist[boxx][boxy] = True
-    elif asli == SHADOW:
-        pygame.draw.circle(DISPLAYSURF,SHADOWCOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE)
-
-
-def gambarRing(boxx,boxy):
-    left,top = lefttopkoordinatbox(boxx,boxy)
-    pygame.draw.circle(DISPLAYSURF,RINGCOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE+3,3)
+    elif bentuk == RING:
+        pygame.draw.circle(DISPLAYSURF,RINGCOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE+3,3)
+    elif bentuk == CURMARBLE:
+        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(boxx+2,boxy+2),JARI2MARBLE)
+        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(boxx,boxy),JARI2MARBLE)
 
 def sentuhMarble(x,y):
     for boxx in range(LEBARPAPAN):
@@ -204,7 +181,7 @@ def refreshMarble(marbles):
     for i in range(LEBARPAPAN):
         for j in range(TINGGIPAPAN):
             if marbles[i][j] == True:
-                gambarMarble(MARBLE,REAL,i,j)
+                gambarObjek(MARBLE,i,j)
 
 def cekmarblerelease(boxx,boxy,prevselect,marbles):
     if prevselect == (None,None):
@@ -247,12 +224,29 @@ def hitungmarbles(marbles):
     return jum
 
 def wincelebration(randomcongrats):
-    settingFont = pygame.font.Font('freesansbold.ttf',48)
+    settingFont = pygame.font.Font('freesansbold.ttf',36)
     permukaanteks = settingFont.render(randomcongrats,True,WINTEKSCOLOR)
     teksRectObj = permukaanteks.get_rect()
     teksRectObj.center = (int(LEBARWINDOW/2),int(TINGGIWINDOW/4))
 
     DISPLAYSURF.blit(permukaanteks,teksRectObj)
+
+def setLevel(level,marbles):
+    if level == 1:
+        marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
+    elif level == 2:
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-2] = True
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-1] = True
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)+1] = True
+        # ========= tambah level disini ===========
+    else:
+        marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
+    return marbles
+
 
 if __name__ == '__main__':
     main()
