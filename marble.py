@@ -18,8 +18,6 @@ UKURANCELAH = 10
 
 LEBARPAPAN = 7
 TINGGIPAPAN = 7
-# LEBARPAPAN = 1
-# TINGGIPAPAN = 7
 
 #ukuran margin
 XMARGIN = int((LEBARWINDOW - (LEBARPAPAN * (UKURANMARBLE + UKURANCELAH))) / 2)
@@ -31,18 +29,19 @@ PUTIH       = (255,255,255)
 JINGGA      = (255,180,  0)
 JINGGATUA   = (150, 75,  0)
 UNGU        = (200, 10,255)
-KUNING      = (255,230,  0)
+LIMEHIJAU   = (150,255,  0)
 BIRU        = (170,100,255)
 BIRUTUA     = (100,  0,150)
 
-BGCOLOR = UNGU
+BGCOLOR1 = UNGU
+BGCOLOR2 = LIMEHIJAU
+
 MARBLECOLOR = JINGGA
 MARBLECOLOR2 = JINGGATUA
 RINGCOLOR = PUTIH
 BOARDCOLOR = BIRU
 BOARDCOLOR2 = BIRUTUA
 WINTEKSCOLOR = PUTIH
-WINBGTEKSCOLOR = None
 
 # gambar objek
 MARBLE = 'marble'
@@ -59,23 +58,20 @@ def main():
     xmouse = 0
     ymouse = 0
     prevselect = (None,None)
-    marbles = []
     mousehold = False
     win = False
     congratsteks = ['Fantastic!','Magnificent!','Amazing!','Well Played!','Awesome!','Good Game!','Well Done!']
     randomcongrats = ''
 
-    #set marble tabel LEBARPAPAN x TINGGIPAPAN
-    for i in range(LEBARPAPAN):
-        marbles.append([False] * TINGGIPAPAN)
-    
     #set level
-    marbles = setLevel(2,marbles)
+    #set marble tabel LEBARPAPAN x TINGGIPAPAN
+    level = 2
+    marbles = setLevel(level)
 
     while True:
         mouseklik = False
         mouserelease = False
-        gambarBG()
+        gambarBG(level)
         refreshMarble(marbles)
         
         for event in pygame.event.get():
@@ -100,7 +96,12 @@ def main():
 
             elif event.type == MOUSEMOTION:
                 xmouse, ymouse = event.pos
-                
+
+        if tampilReset(xmouse,ymouse,mouseklik) == True:
+            #set level
+            marbles = setLevel(level)
+            win = False
+
         if win == True:
             wincelebration(randomcongrats)
         else:
@@ -139,15 +140,6 @@ def lefttopkoordinatbox(boxx,boxy):
     left = boxx * (UKURANMARBLE + UKURANCELAH) + XMARGIN
     top = boxy * (UKURANMARBLE + UKURANCELAH) + YMARGIN
     return (left,top)
-
-def gambarBG():
-    DISPLAYSURF.fill(BGCOLOR)
-    for i in range(LEBARPAPAN):
-        for j in range(TINGGIPAPAN):
-            gambarWadah2(i,j)
-    for i in range(LEBARPAPAN):
-        for j in range(TINGGIPAPAN):
-            gambarWadah(i,j)
 
 def gambarWadah2(boxx,boxy):
     left,top = lefttopkoordinatbox(boxx,boxy)
@@ -231,22 +223,82 @@ def wincelebration(randomcongrats):
 
     DISPLAYSURF.blit(permukaanteks,teksRectObj)
 
-def setLevel(level,marbles):
+def gambarBG(level):
+    if level == 1:
+        DISPLAYSURF.fill(BGCOLOR1)
+        for i in range(7):
+            gambarWadah2(i,3)
+        for i in range(7):
+            gambarWadah(i,3)
+
+    elif level == 2:
+        DISPLAYSURF.fill(BGCOLOR1)
+        for i in range(1,6):
+            for j in range(1,6):
+                gambarWadah2(i,j)
+        for i in range(1,6):
+            for j in range(1,6):
+                gambarWadah(i,j)
+    else:
+        #default level 1
+        DISPLAYSURF.fill(BGCOLOR1)
+        for i in range(7):
+            for j in range(1):
+                gambarWadah2(i,j)
+        for i in range(7):
+            for j in range(1):
+                gambarWadah(i,j)
+
+def setLevel(level):
+    # kosongkan marbles table
+    marbles = []
+
+    # isi dengan False
+    for i in range(LEBARPAPAN):
+        marbles.append([False] * TINGGIPAPAN)
+
+    # inisialisasi level
     if level == 1:
         marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
         marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
         marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
     elif level == 2:
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-2] = True
+        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)] = True
         marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-1] = True
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)+1] = True
+        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)+1] = True
+        #===========================================
         # ========= tambah level disini ===========
+        #===========================================
     else:
+        #default level 1
         marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
         marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
         marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
+    
+    # kembalikan nilai marbles table
     return marbles
 
+def tampilReset(x,y,mouseklik):
+    fontsize = 18
+    settingFont = pygame.font.Font('freesansbold.ttf',fontsize)
+    permukaanteks = settingFont.render('Reset',True,WINTEKSCOLOR)
+    teksRectObj = permukaanteks.get_rect()
+    teksRectObj.center = (int(LEBARWINDOW/10),int(TINGGIWINDOW/20))
+    
+    if teksRectObj.collidepoint(x,y):
+        fontsize = 20
+        settingFont = pygame.font.Font('freesansbold.ttf',fontsize)
+        permukaanteks = settingFont.render('Reset',True,WINTEKSCOLOR)
+        teksRectObj = permukaanteks.get_rect()
+        teksRectObj.center = (int(LEBARWINDOW/10),int(TINGGIWINDOW/20))
+        DISPLAYSURF.blit(permukaanteks,teksRectObj)
+        if mouseklik == True:
+            return True
+        else:
+            return False
+    DISPLAYSURF.blit(permukaanteks,teksRectObj)
+    
 
 if __name__ == '__main__':
     main()
