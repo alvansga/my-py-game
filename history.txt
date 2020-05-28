@@ -1,0 +1,14 @@
+history.txt
+
+# BIGPROJECT4
+# marble
+# by ejra
+# inspired by childhood games
+# start date 26 mei 2020
+# finish date 26 juni 2020
+
+V1
+need to improve:
+ - tidak ada undo
+ - belum bisa banyak level
+ 
