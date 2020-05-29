@@ -38,6 +38,7 @@ HITAM       = (  0,  0,  0)
 ABU2        = ( 10, 10, 10)
 ABU2_1      = ( 20, 20, 20)
 
+#dark theme
 BGCOLOR1 = HITAM
 BGCOLOR2 = ABU2
 
@@ -47,6 +48,18 @@ RINGCOLOR = ABU2
 BOARDCOLOR = HITAM
 BOARDCOLOR2 = ABU2
 WINTEKSCOLOR = PUTIH
+
+#original
+# BGCOLOR1 = UNGU
+# BGCOLOR2 = LIMEHIJAU
+
+# MARBLECOLOR = JINGGA
+# MARBLECOLOR2 = JINGGATUA
+# RINGCOLOR = PUTIH
+# BOARDCOLOR = BIRU
+# BOARDCOLOR2 = BIRUTUA
+# WINTEKSCOLOR = PUTIH
+
 
 # gambar objek
 MARBLE = 'marble'
@@ -329,14 +342,25 @@ def setLevel(level):
         marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-2] = True
 
     elif level == 5:
-        for i in range(LEBARPAPAN):
-            for j in range(TINGGIPAPAN):
-                marbles[i][j] = True
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)] = False
-        marbles[0][0] = False
-        marbles[6][0] = False
-        marbles[6][6] = False
-        marbles[0][6] = False
+        marbles[int(LEBARPAPAN/2)-3][int(TINGGIPAPAN/2)+1] = True
+        marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)+1] = True
+        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)+1] = True
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)+1] = True
+        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)+1] = True
+        marbles[int(LEBARPAPAN/2)+2][int(TINGGIPAPAN/2)+1] = True
+        marbles[int(LEBARPAPAN/2)+3][int(TINGGIPAPAN/2)+1] = True
+
+        marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
+        marbles[int(LEBARPAPAN/2)+2][int(TINGGIPAPAN/2)] = True
+
+        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)-1] = True
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-1] = True
+        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)-1] = True
+
+        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-2] = True
         #===========================================
         # ========= tambah level disini ===========
         #===========================================
