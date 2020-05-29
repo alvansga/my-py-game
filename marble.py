@@ -43,26 +43,26 @@ ABU2        = ( 10, 10, 10)
 ABU2_1      = ( 20, 20, 20)
 
 #dark theme
-BGCOLOR1 = HITAM
-BGCOLOR2 = ABU2
+# BGCOLOR1 = HITAM
+# BGCOLOR2 = ABU2
 
-MARBLECOLOR = ABU2_1
-MARBLECOLOR2 = HITAM
-RINGCOLOR = ABU2
-BOARDCOLOR = HITAM
-BOARDCOLOR2 = ABU2
-WINTEKSCOLOR = PUTIH
+# MARBLECOLOR = ABU2_1
+# MARBLECOLOR2 = HITAM
+# RINGCOLOR = ABU2
+# BOARDCOLOR = HITAM
+# BOARDCOLOR2 = ABU2
+# WINTEKSCOLOR = PUTIH
 
 #original
-# BGCOLOR1 = UNGU
-# BGCOLOR2 = LIMEHIJAU
+BGCOLOR1 = UNGU
+BGCOLOR2 = LIMEHIJAU
 
-# MARBLECOLOR = JINGGA
-# MARBLECOLOR2 = JINGGATUA
-# RINGCOLOR = PUTIH
-# BOARDCOLOR = BIRU
-# BOARDCOLOR2 = BIRUTUA
-# WINTEKSCOLOR = PUTIH
+MARBLECOLOR = JINGGA
+MARBLECOLOR2 = JINGGATUA
+RINGCOLOR = PUTIH
+BOARDCOLOR = BIRU
+BOARDCOLOR2 = BIRUTUA
+WINTEKSCOLOR = PUTIH
 
 
 # gambar objek
@@ -246,7 +246,7 @@ def wincelebration(randomcongrats):
     settingFont = pygame.font.Font('freesansbold.ttf',36)
     permukaanteks = settingFont.render(randomcongrats,True,WINTEKSCOLOR)
     teksRectObj = permukaanteks.get_rect()
-    teksRectObj.center = (int(LEBARWINDOW/2),int(TINGGIWINDOW/4))
+    teksRectObj.center = (int(LEBARWINDOW/2),int(TINGGIWINDOW/10))
 
     DISPLAYSURF.blit(permukaanteks,teksRectObj)
 
@@ -415,7 +415,7 @@ def bacapola(pola,marbles):
 def tampilauthor():
     fontsize = 18
     settingFont = pygame.font.SysFont('Arial.ttf',fontsize)
-    permukaanteks = settingFont.render('@zralvansga',True,WINTEKSCOLOR)
+    permukaanteks = settingFont.render('@zralvansga',True,BIRUTUA)
     teksRectObj = permukaanteks.get_rect()
     teksRectObj.bottomright = (LEBARWINDOW,TINGGIWINDOW)
 
