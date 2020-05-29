@@ -19,6 +19,10 @@ UKURANCELAH = 10
 LEBARPAPAN = 7
 TINGGIPAPAN = 7
 
+#############
+MAXLEVEL = 7
+#############
+
 #ukuran margin
 XMARGIN = int((LEBARWINDOW - (LEBARPAPAN * (UKURANMARBLE + UKURANCELAH))) / 2)
 YMARGIN = int((TINGGIWINDOW - (TINGGIPAPAN * (UKURANMARBLE + UKURANCELAH))) / 2)
@@ -83,8 +87,8 @@ def main():
 
     #set level
     #set marble tabel LEBARPAPAN x TINGGIPAPAN
-    levellist = [1,2,3,4,5]
-    level = random.choice(levellist)
+    # levellist = [1,2,3,4,5]
+    level = 1
     marbles = setLevel(level)
 
     while True:
@@ -116,13 +120,17 @@ def main():
             elif event.type == MOUSEMOTION:
                 xmouse, ymouse = event.pos
 
+        tampillevel(level)
+        tampilauthor()
         if tampilReset(xmouse,ymouse,mouseklik) == True:
             #set level
             marbles = setLevel(level)
             win = False
         if tampilNewLevel(xmouse,ymouse,mouseklik) == True:
             #set level
-            level = random.choice(levellist)
+            level += 1
+            if level > MAXLEVEL:
+                level = 1
             marbles = setLevel(level)
             win = False
 
@@ -258,130 +266,110 @@ def gambarBG(level):
         for i in range(1,6):
             for j in range(1,6):
                 gambarWadah(i,j)
-    elif level == 3:
-        DISPLAYSURF.fill(BGCOLOR1)
-        for i in range(7):
-            for j in range(7):
-                gambarWadah2(i,j)
-        for i in range(7):
-            for j in range(7):
-                gambarWadah(i,j)
-    elif level == 4:
-        DISPLAYSURF.fill(BGCOLOR1)
-        for i in range(7):
-            for j in range(7):
-                gambarWadah2(i,j)
-        for i in range(7):
-            for j in range(7):
-                gambarWadah(i,j)
-    elif level == 5:
-        DISPLAYSURF.fill(BGCOLOR1)
-        for i in range(7):
-            for j in range(7):
-                gambarWadah2(i,j)
-        for i in range(7):
-            for j in range(7):
-                gambarWadah(i,j)
     else:
-        #default level 1
+        #default papan 7x7
         DISPLAYSURF.fill(BGCOLOR1)
         for i in range(7):
-            for j in range(1):
+            for j in range(7):
                 gambarWadah2(i,j)
         for i in range(7):
-            for j in range(1):
+            for j in range(7):
                 gambarWadah(i,j)
 
 def setLevel(level):
     # kosongkan marbles table
     marbles = []
-
+    
     # isi dengan False
     for i in range(LEBARPAPAN):
         marbles.append([False] * TINGGIPAPAN)
 
     # inisialisasi level
     if level == 1:
-        marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
+        pola = ["-------",
+                "-------",
+                "-------",
+                "-**-*--",
+                "-------",
+                "-------",
+                "-------"]
     elif level == 2:
-        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-1] = True
-        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)+1] = True
+        pola = ["-------",
+                "-------",
+                "--*----",
+                "---**--",
+                "---*---",
+                "-------",
+                "-------"]
     elif level == 3:
-        marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)+2][int(TINGGIPAPAN/2)] = True
-
-        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)-1] = True
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-1] = True
-        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)-1] = True
-
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-2] = True
+        pola = ["-------",
+                "---*---",
+                "--***--",
+                "-*****-",
+                "-------",
+                "-------",
+                "-------"]
     elif level == 4:
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)+2] = True
-
-        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)+1] = True
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)+1] = True
-        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)+1] = True
-
-        marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
-        # marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)+2][int(TINGGIPAPAN/2)] = True
-
-        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)-1] = True
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-1] = True
-        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)-1] = True
-
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-2] = True
-
+        pola = ["-------",
+                "---*---",
+                "--***--",
+                "-**-**-",
+                "--***--",
+                "---*---",
+                "-------"]
     elif level == 5:
-        marbles[int(LEBARPAPAN/2)-3][int(TINGGIPAPAN/2)+1] = True
-        marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)+1] = True
-        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)+1] = True
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)+1] = True
-        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)+1] = True
-        marbles[int(LEBARPAPAN/2)+2][int(TINGGIPAPAN/2)+1] = True
-        marbles[int(LEBARPAPAN/2)+3][int(TINGGIPAPAN/2)+1] = True
-
-        marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)+2][int(TINGGIPAPAN/2)] = True
-
-        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)-1] = True
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-1] = True
-        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)-1] = True
-
-        marbles[int(LEBARPAPAN/2)][int(TINGGIPAPAN/2)-2] = True
+        pola = ["-------",
+                "---*---",
+                "--***--",
+                "-*****-",
+                "*******",
+                "-------",
+                "-------"]
+    elif level == 6:
+        pola = ["---*---",
+                "--***--",
+                "-*****-",
+                "---*---",
+                "---*---",
+                "--***--",
+                "--***--"]
+    elif level == 7:
+        pola = ["--***--",
+                "--***--",
+                "*******",
+                "***-***",
+                "*******",
+                "--***--",
+                "--***--"]
         #===========================================
         # ========= tambah level disini ===========
         #===========================================
     else:
         #default level 1
-        marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
-        marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
+        pola = ["-------",
+                "-------",
+                "-------",
+                "--**-*-",
+                "-------",
+                "-------",
+                "-------"]
+        # marbles[int(LEBARPAPAN/2)-2][int(TINGGIPAPAN/2)] = True
+        # marbles[int(LEBARPAPAN/2)-1][int(TINGGIPAPAN/2)] = True
+        # marbles[int(LEBARPAPAN/2)+1][int(TINGGIPAPAN/2)] = True
     
     # kembalikan nilai marbles table
+    marbles=bacapola(pola,marbles)
     return marbles
 
 def tampilReset(x,y,mouseklik):
-    fontsize = 18
+    fontsize = 20
     settingFont = pygame.font.SysFont('Arial.ttf',fontsize)
     permukaanteks = settingFont.render('Reset',True,WINTEKSCOLOR)
     teksRectObj = permukaanteks.get_rect()
     teksRectObj.topleft = (0,0)
 
     if teksRectObj.collidepoint(x,y):
-        fontsize = 20
+        fontsize = 22
         settingFont = pygame.font.SysFont('Arial.ttf',fontsize)
         permukaanteks = settingFont.render('Reset',True,KUNING)
         teksRectObj = permukaanteks.get_rect()
@@ -394,23 +382,53 @@ def tampilReset(x,y,mouseklik):
     DISPLAYSURF.blit(permukaanteks,teksRectObj)
     
 def tampilNewLevel(x,y,mouseklik):
-    fontsize = 18
+    fontsize = 20
     settingFont = pygame.font.SysFont('Calibri.ttf',fontsize)
-    permukaanteks = settingFont.render('Generate New Level',True,WINTEKSCOLOR)
+    permukaanteks = settingFont.render('Next Level',True,WINTEKSCOLOR)
     teksRectObj = permukaanteks.get_rect()
-    teksRectObj.topright = (480,0)
+    teksRectObj.topright = (LEBARWINDOW,0)
     if teksRectObj.collidepoint(x,y):
-        fontsize = 20
+        fontsize = 22
         settingFont = pygame.font.SysFont('Calibri.ttf',fontsize)
-        permukaanteks = settingFont.render('Generate New Level',True,KUNING)
+        permukaanteks = settingFont.render('Next Level',True,KUNING)
         teksRectObj = permukaanteks.get_rect()
-        teksRectObj.topright = (480,0)
+        teksRectObj.topright = (LEBARWINDOW,0)
         DISPLAYSURF.blit(permukaanteks,teksRectObj)
         if mouseklik == True:
             return True
         else:
             return False
     DISPLAYSURF.blit(permukaanteks,teksRectObj)
+
+def bacapola(pola,marbles):
+    #contoh pola
+    
+    assert (len(pola)*len(min(pola))) == (LEBARPAPAN * TINGGIPAPAN) , 'jumlah pola dan papan tidak seimbang'
+    for baris in range(LEBARPAPAN):
+        for kolom in range(TINGGIPAPAN):
+            if pola[kolom][baris] == "*":
+                marbles[baris][kolom] = True
+            else:
+                marbles[baris][kolom] = False
+    return marbles
+
+def tampilauthor():
+    fontsize = 18
+    settingFont = pygame.font.SysFont('Arial.ttf',fontsize)
+    permukaanteks = settingFont.render('@zralvansga',True,WINTEKSCOLOR)
+    teksRectObj = permukaanteks.get_rect()
+    teksRectObj.bottomright = (LEBARWINDOW,TINGGIWINDOW)
+
+    DISPLAYSURF.blit(permukaanteks,teksRectObj)
+
+def tampillevel(level):
+    fontsize = 24
+    settingFont = pygame.font.SysFont('Arial.ttf',fontsize)
+    permukaanteks = settingFont.render("LEVEL "+str(level),True,WINTEKSCOLOR)
+    teksRectObj = permukaanteks.get_rect()
+    teksRectObj.midtop = (int(LEBARWINDOW/2),0)
+    DISPLAYSURF.blit(permukaanteks,teksRectObj)
+
 
 if __name__ == '__main__':
     main()

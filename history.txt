@@ -9,6 +9,12 @@ history.txt
 
 V1
 need to improve:
- - tidak ada undo
- - belum bisa banyak level
+ - previous and next level
+ - score -> time or step
+
+29 mei 2020
+> selesai! <
+
+tinggal improve2 aja
+
  
