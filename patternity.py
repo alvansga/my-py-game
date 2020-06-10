@@ -38,9 +38,37 @@ ABU2        = ( 10, 10, 10)
 ABU2_1      = ( 20, 20, 20)
 
 # gradasi nyala LAMPU
-LINE11   = (240, 65, 65)
-LINE12   = (245, 66, 173)
+GRADMERAH1   = (240, 65, 240)
+GRADMERAH2   = (240, 65, 200)
+GRADMERAH3   = (240, 65, 160)
+GRADMERAH4   = (240, 65, 120)
+GRADMERAH5   = (240, 65,  80)
+GRADBIRU1    = (200, 65,  240)
+GRADBIRU2    = (160, 65,  240)
+GRADBIRU3    = (120, 65,  240)
+GRADBIRU4    = (80, 65,  240)
+GRADBIRU5    = (40, 65,  240)
+GRADHIJAU1    = (65, 240,  240)
+GRADHIJAU2    = (65, 200,  240)
+GRADHIJAU3    = (65, 160,  240)
+GRADHIJAU4    = (65, 120,  240)
+GRADHIJAU5    = (65, 80,  240)
+GRADTOSCA1    = (65, 240,  200)
+GRADTOSCA2    = (65, 240,  160)
+GRADTOSCA3    = (65, 240,  120)
+GRADTOSCA4    = (65, 240,  80)
+GRADTOSCA5    = (65, 240,  40)
+GRADKUNING1   = (240,240, 65)
+GRADKUNING2   = (240,200, 65)
+GRADKUNING3   = (240,160, 65)
+GRADKUNING4   = (240,120, 65)
+GRADKUNING5   = (240,80, 65)
 
+urutanwarna = [[GRADMERAH1,GRADMERAH2,GRADMERAH3,GRADMERAH4,GRADMERAH5],
+               [GRADBIRU1,GRADBIRU2,GRADBIRU3,GRADBIRU4,GRADBIRU5],
+               [GRADHIJAU1,GRADHIJAU2,GRADHIJAU3,GRADHIJAU4,GRADHIJAU5],
+               [GRADTOSCA1,GRADTOSCA2,GRADTOSCA3,GRADTOSCA4,GRADTOSCA5],
+               [GRADKUNING1,GRADKUNING2,GRADKUNING3,GRADKUNING4,GRADKUNING5]]
 
 NYALA,MATI = 1,0
 
@@ -65,11 +93,11 @@ def main():
     prevselect = (None,None)
     mousehold = False
     win = False
-
+    
     while True:
         mouseklik = False
         mouserelease = False
-        refreshlampu()
+        # refreshlampu()
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
                 pygame.quit()
@@ -105,7 +133,7 @@ def lefttopkoordinatbox(boxx,boxy):
 def buatlampu(nyala,boxx,boxy):
     left,top = lefttopkoordinatbox(boxx,boxy)
     if nyala == 1:
-        pygame.draw.circle(DISPLAYSURF,LINE12,(left+LAMPRADIUS+2,top+LAMPRADIUS+2),LAMPRADIUS)
+        pygame.draw.circle(DISPLAYSURF,urutanwarna[boxx][boxy],(left+LAMPRADIUS+2,top+LAMPRADIUS+2),LAMPRADIUS)
         # pygame.draw.circle(DISPLAYSURF,LINE12,(left+LAMPRADIUS,top+LAMPRADIUS),LAMPRADIUS)
     else:
         pygame.draw.circle(DISPLAYSURF,ABU2_1,(left+LAMPRADIUS+2,top+LAMPRADIUS+2),LAMPRADIUS)
