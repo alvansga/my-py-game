@@ -75,9 +75,6 @@ NYALA,MATI = 1,0
 #original
 BGCOLOR1 = HITAM
 
-# gambar objek
-LAMP = 'lamp'
-RING = 'ring'
 
 def main():
     global FPSCLOCK, DISPLAYSURF
@@ -94,9 +91,16 @@ def main():
     refreshlampu(lamp)
     pygame.display.update()
     pygame.time.wait(1000)
-    jumlahlamp=[(0,0),(0,0),(0,0)]
 
-    jumlahlamp=animasilevel1(jumlahlamp)
+    #TINGKAT KESULITAN#
+    num = 5
+    waktu = 500
+    ###################
+    jumlahlamp = []
+    for i in range(num):
+        jumlahlamp.append((0,0))
+
+    jumlahlamp=animasilevel(jumlahlamp,waktu)
     pointerjumlahlamp = 0
 
     print(lamp)
@@ -139,6 +143,8 @@ def main():
             lamp = initlampu()
             animasimulai()
             animasimati()
+            pygame.quit()
+            sys.exit()
         else:
             if boxx != None and boxy != None:
                 if lamp[boxx][boxy] != True:
@@ -214,7 +220,7 @@ def animasimati():
             pygame.display.update()
             pygame.time.wait(50)
 
-def animasilevel1(jumlahlamplist):
+def animasilevel(jumlahlamplist,waktu):
     lamp = initlampu()
     lebar=[]
     tinggi=[]
@@ -237,7 +243,7 @@ def animasilevel1(jumlahlamplist):
         jumlahlamplist[count] = (kolom,baris)
         buatlampu(NYALA,kolom,baris)
         pygame.display.update()
-        pygame.time.wait(1000)
+        pygame.time.wait(waktu)
     return jumlahlamplist
 
 if __name__ == '__main__':
