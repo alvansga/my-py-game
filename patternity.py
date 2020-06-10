@@ -86,15 +86,21 @@ def main():
     DISPLAYSURF = pygame.display.set_mode((WIDTHWINDOW,HEIGHTWINDOW))
     pygame.display.set_caption('Light It Up')
     
-    # animasimulai()
-    # pygame.time.wait(1000)
-
+    animasimulai()
+    pygame.time.wait(1000)
+    
     # #level 1
-    # refreshlampu()
-    # pygame.display.update()
-    # pygame.time.wait(1000)
-    lamp=animasilevel1()
+    lamp = initlampu()
+    refreshlampu(lamp)
+    pygame.display.update()
+    pygame.time.wait(1000)
+    jumlahlamp=[(0,0),(0,0),(0,0)]
 
+    jumlahlamp=animasilevel1(jumlahlamp)
+    pointerjumlahlamp = 0
+
+    print(lamp)
+    print(jumlahlamp)
     xmouse = 0
     ymouse = 0
     prevselect = (None,None)
@@ -104,7 +110,7 @@ def main():
     while True:
         mouseklik = False
         mouserelease = False
-        refreshlampu()
+        refreshlampu(lamp)
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
                 pygame.quit()
@@ -129,8 +135,26 @@ def main():
                 xmouse, ymouse = event.pos
 
         boxx,boxy = sentuhLampMati(xmouse,ymouse)
-        if boxx != None and boxy != None:
-            buatcincin(boxx,boxy)
+        if win == True:
+            lamp = initlampu()
+            animasimulai()
+            animasimati()
+        else:
+            if boxx != None and boxy != None:
+                if lamp[boxx][boxy] != True:
+                    buatcincin(boxx,boxy)
+                if mouserelease == True:
+                    if boxx == jumlahlamp[pointerjumlahlamp][0] and boxy == jumlahlamp[pointerjumlahlamp][1]:
+                        print("urutan 1 nyala")
+                        lamp[boxx][boxy] = True
+                        pointerjumlahlamp += 1
+                        if pointerjumlahlamp == len(jumlahlamp):
+                            win = True
+                            print("menang")
+                    else:
+                        lamp = initlampu()
+                        pointerjumlahlamp = 0
+
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
@@ -142,15 +166,15 @@ def lefttopkoordinatbox(boxx,boxy):
 def buatlampu(nyala,boxx,boxy):
     left,top = lefttopkoordinatbox(boxx,boxy)
     if nyala == 1:
-        pygame.draw.circle(DISPLAYSURF,urutanwarna[boxx][boxy],(left+LAMPRADIUS+2,top+LAMPRADIUS+2),LAMPRADIUS)
-        # pygame.draw.circle(DISPLAYSURF,LINE12,(left+LAMPRADIUS,top+LAMPRADIUS),LAMPRADIUS)
+        # pygame.draw.circle(DISPLAYSURF,urutanwarna[boxx][boxy],(left+LAMPRADIUS+2,top+LAMPRADIUS+2),LAMPRADIUS)
+        pygame.draw.circle(DISPLAYSURF,urutanwarna[boxx][boxy],(left+LAMPRADIUS,top+LAMPRADIUS),LAMPRADIUS)
     else:
-        pygame.draw.circle(DISPLAYSURF,ABU2_1,(left+LAMPRADIUS+2,top+LAMPRADIUS+2),LAMPRADIUS)
-        # pygame.draw.circle(DISPLAYSURF,ABU2_1,(left+LAMPRADIUS,top+LAMPRADIUS),LAMPRADIUS)
+        # pygame.draw.circle(DISPLAYSURF,ABU2_1,(left+LAMPRADIUS+2,top+LAMPRADIUS+2),LAMPRADIUS)
+        pygame.draw.circle(DISPLAYSURF,ABU2_1,(left+LAMPRADIUS,top+LAMPRADIUS),LAMPRADIUS)
 
 def buatcincin(boxx,boxy):
     left,top = lefttopkoordinatbox(boxx,boxy)
-    pygame.draw.circle(DISPLAYSURF,PUTIH,(left+LAMPRADIUS,top+LAMPRADIUS),LAMPRADIUS+3,3)
+    pygame.draw.circle(DISPLAYSURF,PUTIH,(left+LAMPRADIUS,top+LAMPRADIUS),LAMPRADIUS+2,3)
 
 def sentuhLampMati(x,y):
     for boxx in range(WIDTHBOARD):
@@ -161,12 +185,21 @@ def sentuhLampMati(x,y):
                 return (boxx,boxy)
     return (None,None)
 
-def refreshlampu():
+def initlampu():
+    lamp = []
+    for i in range(WIDTHBOARD):
+        lamp.append([False] * HEIGHTBOARD)
+    return lamp
+
+def refreshlampu(lamp):
     DISPLAYSURF.fill(BGCOLOR1)
     for i in range(WIDTHBOARD):
         for j in range(HEIGHTBOARD):
-            buatlampu(MATI,i,j)
-
+            if lamp[i][j] == False:
+                buatlampu(MATI,i,j)
+            else:
+                buatlampu(NYALA,i,j)
+    
 def animasimulai():
     for i in range(WIDTHBOARD):
         for j in range(HEIGHTBOARD):
@@ -174,15 +207,38 @@ def animasimulai():
             pygame.display.update()
             pygame.time.wait(50)
 
-def animasilevel1():
-    for count in range(3):
-        refreshlampu()
+def animasimati():
+    for i in range(WIDTHBOARD):
+        for j in range(HEIGHTBOARD):
+            buatlampu(MATI,j,i)
+            pygame.display.update()
+            pygame.time.wait(50)
+
+def animasilevel1(jumlahlamplist):
+    lamp = initlampu()
+    lebar=[]
+    tinggi=[]
+
+    for i in range(WIDTHBOARD):
+        lebar.append(i)
+    for i in range(HEIGHTBOARD):
+        tinggi.append(i)
+
+    for count in range(len(jumlahlamplist)):
+        refreshlampu(lamp)
         pygame.display.update()
         pygame.time.wait(100)
 
-        buatlampu(NYALA,random.choice(range(WIDTHBOARD)),random.choice(range(HEIGHTBOARD)))
+        kolom = random.choice(lebar)
+        lebar.remove(kolom)
+        baris = random.choice(tinggi)
+        tinggi.remove(baris)
+
+        jumlahlamplist[count] = (kolom,baris)
+        buatlampu(NYALA,kolom,baris)
         pygame.display.update()
         pygame.time.wait(1000)
+    return jumlahlamplist
 
 if __name__ == '__main__':
     main()
