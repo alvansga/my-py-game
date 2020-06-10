@@ -1,5 +1,5 @@
 # BIGPROJECT5
-# patternity
+# light it up
 # by ejra
 # start date 10 juni 2020
 # finish date 10 juli 2020
@@ -84,10 +84,17 @@ def main():
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WIDTHWINDOW,HEIGHTWINDOW))
-    pygame.display.set_caption('Patternity')
+    pygame.display.set_caption('Light It Up')
     
-    animasimulai()
-    pygame.time.wait(500)
+    # animasimulai()
+    # pygame.time.wait(1000)
+
+    # #level 1
+    # refreshlampu()
+    # pygame.display.update()
+    # pygame.time.wait(1000)
+    lamp=animasilevel1()
+
     xmouse = 0
     ymouse = 0
     prevselect = (None,None)
@@ -97,7 +104,7 @@ def main():
     while True:
         mouseklik = False
         mouserelease = False
-        # refreshlampu()
+        refreshlampu()
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
                 pygame.quit()
@@ -121,7 +128,9 @@ def main():
             elif event.type == MOUSEMOTION:
                 xmouse, ymouse = event.pos
 
-
+        boxx,boxy = sentuhLampMati(xmouse,ymouse)
+        if boxx != None and boxy != None:
+            buatcincin(boxx,boxy)
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 
@@ -139,7 +148,21 @@ def buatlampu(nyala,boxx,boxy):
         pygame.draw.circle(DISPLAYSURF,ABU2_1,(left+LAMPRADIUS+2,top+LAMPRADIUS+2),LAMPRADIUS)
         # pygame.draw.circle(DISPLAYSURF,ABU2_1,(left+LAMPRADIUS,top+LAMPRADIUS),LAMPRADIUS)
 
+def buatcincin(boxx,boxy):
+    left,top = lefttopkoordinatbox(boxx,boxy)
+    pygame.draw.circle(DISPLAYSURF,PUTIH,(left+LAMPRADIUS,top+LAMPRADIUS),LAMPRADIUS+3,3)
+
+def sentuhLampMati(x,y):
+    for boxx in range(WIDTHBOARD):
+        for boxy in range(HEIGHTBOARD):
+            left, top = lefttopkoordinatbox(boxx,boxy)
+            boxrect = pygame.Rect(left,top,LAMPSIZE,LAMPSIZE)
+            if boxrect.collidepoint(x,y):
+                return (boxx,boxy)
+    return (None,None)
+
 def refreshlampu():
+    DISPLAYSURF.fill(BGCOLOR1)
     for i in range(WIDTHBOARD):
         for j in range(HEIGHTBOARD):
             buatlampu(MATI,i,j)
@@ -151,6 +174,15 @@ def animasimulai():
             pygame.display.update()
             pygame.time.wait(50)
 
+def animasilevel1():
+    for count in range(3):
+        refreshlampu()
+        pygame.display.update()
+        pygame.time.wait(100)
+
+        buatlampu(NYALA,random.choice(range(WIDTHBOARD)),random.choice(range(HEIGHTBOARD)))
+        pygame.display.update()
+        pygame.time.wait(1000)
 
 if __name__ == '__main__':
     main()
