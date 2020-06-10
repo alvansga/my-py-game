@@ -222,23 +222,17 @@ def animasimati():
 
 def animasilevel(jumlahlamplist,waktu):
     lamp = initlampu()
-    lebar=[]
-    tinggi=[]
-
-    for i in range(WIDTHBOARD):
-        lebar.append(i)
-    for i in range(HEIGHTBOARD):
-        tinggi.append(i)
 
     for count in range(len(jumlahlamplist)):
         refreshlampu(lamp)
         pygame.display.update()
         pygame.time.wait(100)
 
-        kolom = random.choice(lebar)
-        lebar.remove(kolom)
-        baris = random.choice(tinggi)
-        tinggi.remove(baris)
+        kolom = random.choice(range(WIDTHBOARD))
+        baris = random.choice(range(HEIGHTBOARD))
+        if (kolom,baris) in jumlahlamplist:
+            kolom = random.choice(range(WIDTHBOARD))
+            baris = random.choice(range(HEIGHTBOARD))
 
         jumlahlamplist[count] = (kolom,baris)
         buatlampu(NYALA,kolom,baris)
