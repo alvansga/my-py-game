@@ -88,7 +88,7 @@ def main():
     
     # #level 1
     lamp = initlampu()
-    refreshlampu(lamp)
+    refreshlampu(lamp,"GET READY")
     pygame.display.update()
     pygame.time.wait(1000)
 
@@ -114,7 +114,9 @@ def main():
     while True:
         mouseklik = False
         mouserelease = False
-        refreshlampu(lamp)
+        # tampilcenterstr("LIGHT IT UP")
+        refreshlampu(lamp,"LIGHT IT UP")
+        
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
                 pygame.quit()
@@ -141,9 +143,13 @@ def main():
         boxx,boxy = sentuhLampMati(xmouse,ymouse)
         if win == True:
             win = False
+            refreshlampu(lamp,"WELL DONE")
             lamp = initlampu()
+            # tampilcenterstr("AWESOME")
             animasimulai()
             animasimati()
+            refreshlampu(lamp,"GET READY")
+            pygame.display.update()
             pygame.time.wait(1000)
 
             #TINGKAT KESULITAN#
@@ -211,8 +217,9 @@ def initlampu():
         lamp.append([False] * HEIGHTBOARD)
     return lamp
 
-def refreshlampu(lamp):
+def refreshlampu(lamp,str):
     DISPLAYSURF.fill(BGCOLOR1)
+    tampilcenterstr(str)
     for i in range(WIDTHBOARD):
         for j in range(HEIGHTBOARD):
             if lamp[i][j] == False:
@@ -221,9 +228,11 @@ def refreshlampu(lamp):
                 buatlampu(NYALA,i,j)
     
 def animasimulai():
+    
     for i in range(WIDTHBOARD):
         for j in range(HEIGHTBOARD):
             buatlampu(NYALA,j,i)
+            
             pygame.display.update()
             pygame.time.wait(50)
 
@@ -235,10 +244,11 @@ def animasimati():
             pygame.time.wait(50)
 
 def animasilevel(jumlahlamplist,waktu):
+    
     lamp = initlampu()
     jumlahlamplist = shufflejumlahlamplist(jumlahlamplist)
     for count in range(len(jumlahlamplist)):
-        refreshlampu(lamp)
+        refreshlampu(lamp,"STAY FOCUS")
         pygame.display.update()
         pygame.time.wait(100)
 
@@ -261,5 +271,14 @@ def shufflejumlahlamplist(jumlahlamplist):
             break
     return jumlahlamplist
         
+def tampilcenterstr(str):
+    # DISPLAYSURF.fill(BGCOLOR1)
+    fontsize = 32
+    settingFont = pygame.font.SysFont('Arial.ttf',fontsize)
+    permukaanteks = settingFont.render(str,True,PUTIH)
+    teksRectObj = permukaanteks.get_rect()
+    teksRectObj.midtop = (int(WIDTHWINDOW/2),0)
+    DISPLAYSURF.blit(permukaanteks,teksRectObj)
+
 if __name__ == '__main__':
     main()
