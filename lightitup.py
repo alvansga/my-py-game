@@ -82,12 +82,11 @@ def main():
     FPSCLOCK = pygame.time.Clock()
     DISPLAYSURF = pygame.display.set_mode((WIDTHWINDOW,HEIGHTWINDOW))
     pygame.display.set_caption('Light It Up')
-    
-    # animasimulai()
-    # pygame.time.wait(1000)
-    
-    # #level 1
     lamp = initlampu()
+    refreshlampu(lamp,"WELCOME")
+    animasimulai()
+    pygame.time.wait(1000)
+    
     refreshlampu(lamp,"GET READY")
     pygame.display.update()
     pygame.time.wait(1000)
@@ -114,9 +113,7 @@ def main():
     while True:
         mouseklik = False
         mouserelease = False
-        # tampilcenterstr("LIGHT IT UP")
         refreshlampu(lamp,"LIGHT IT UP")
-        
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
                 pygame.quit()
@@ -148,9 +145,9 @@ def main():
             # tampilcenterstr("AWESOME")
             animasimulai()
             animasimati()
-            refreshlampu(lamp,"GET READY")
+            refreshlampu(lamp,"GET READY TO THE NEXT LEVEL")
             pygame.display.update()
-            pygame.time.wait(1000)
+            pygame.time.wait(2000)
 
             #TINGKAT KESULITAN#
             level += 1
@@ -220,6 +217,7 @@ def initlampu():
 def refreshlampu(lamp,str):
     DISPLAYSURF.fill(BGCOLOR1)
     tampilcenterstr(str)
+    tampilauthor()
     for i in range(WIDTHBOARD):
         for j in range(HEIGHTBOARD):
             if lamp[i][j] == False:
@@ -248,7 +246,11 @@ def animasilevel(jumlahlamplist,waktu):
     lamp = initlampu()
     jumlahlamplist = shufflejumlahlamplist(jumlahlamplist)
     for count in range(len(jumlahlamplist)):
-        refreshlampu(lamp,"STAY FOCUS")
+        if (len(jumlahlamplist) == 3):
+            strfocus = "STAY FOCUS"
+        else:
+            strfocus = "MORE FOCUS"
+        refreshlampu(lamp,strfocus)
         pygame.display.update()
         pygame.time.wait(100)
 
@@ -278,6 +280,15 @@ def tampilcenterstr(str):
     permukaanteks = settingFont.render(str,True,PUTIH)
     teksRectObj = permukaanteks.get_rect()
     teksRectObj.midtop = (int(WIDTHWINDOW/2),0)
+    DISPLAYSURF.blit(permukaanteks,teksRectObj)
+
+def tampilauthor():
+    fontsize = 18
+    settingFont = pygame.font.SysFont('Arial.ttf',fontsize)
+    permukaanteks = settingFont.render('@zralvansga',True,(200,200,200))
+    teksRectObj = permukaanteks.get_rect()
+    teksRectObj.bottomright = (WIDTHWINDOW,HEIGHTWINDOW)
+
     DISPLAYSURF.blit(permukaanteks,teksRectObj)
 
 if __name__ == '__main__':
