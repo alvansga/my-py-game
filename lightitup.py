@@ -83,8 +83,8 @@ def main():
     DISPLAYSURF = pygame.display.set_mode((WIDTHWINDOW,HEIGHTWINDOW))
     pygame.display.set_caption('Light It Up')
     
-    animasimulai()
-    pygame.time.wait(1000)
+    # animasimulai()
+    # pygame.time.wait(1000)
     
     # #level 1
     lamp = initlampu()
@@ -93,21 +93,21 @@ def main():
     pygame.time.wait(1000)
 
     #TINGKAT KESULITAN#
-    num = 5
-    waktu = 500
+    level = 1 # 1~6
+    LVLMAX = 6
+    kesulitan = [(3,1000),(4,900),(5,800),(6,700),(7,600),(8,500)]
+
+    num,waktu = kesulitan[level-1]
     ###################
     jumlahlamp = []
     for i in range(num):
         jumlahlamp.append((0,0))
-
     jumlahlamp=animasilevel(jumlahlamp,waktu)
+
     pointerjumlahlamp = 0
 
-    print(lamp)
-    print(jumlahlamp)
     xmouse = 0
     ymouse = 0
-    prevselect = (None,None)
     mousehold = False
     win = False
     
@@ -140,26 +140,40 @@ def main():
 
         boxx,boxy = sentuhLampMati(xmouse,ymouse)
         if win == True:
+            win = False
             lamp = initlampu()
             animasimulai()
             animasimati()
-            pygame.quit()
-            sys.exit()
+            pygame.time.wait(1000)
+
+            #TINGKAT KESULITAN#
+            level += 1
+            if level > LVLMAX:
+                level = 1
+            num,waktu = kesulitan[level-1]
+            ###################
+            jumlahlamp = []
+            for i in range(num):
+                jumlahlamp.append((0,0))
+            jumlahlamp=animasilevel(jumlahlamp,waktu)
+
+            pointerjumlahlamp = 0
+            # pygame.quit()
+            # sys.exit()
         else:
             if boxx != None and boxy != None:
                 if lamp[boxx][boxy] != True:
                     buatcincin(boxx,boxy)
-                if mouserelease == True:
-                    if boxx == jumlahlamp[pointerjumlahlamp][0] and boxy == jumlahlamp[pointerjumlahlamp][1]:
-                        print("urutan 1 nyala")
-                        lamp[boxx][boxy] = True
-                        pointerjumlahlamp += 1
-                        if pointerjumlahlamp == len(jumlahlamp):
-                            win = True
-                            print("menang")
-                    else:
-                        lamp = initlampu()
-                        pointerjumlahlamp = 0
+                    if mouserelease == True:
+                        if boxx == jumlahlamp[pointerjumlahlamp][0] and boxy == jumlahlamp[pointerjumlahlamp][1]:
+                            lamp[boxx][boxy] = True
+                            pointerjumlahlamp += 1
+                            if pointerjumlahlamp == len(jumlahlamp):
+                                win = True
+                                print("menang")
+                        else:
+                            lamp = initlampu()
+                            pointerjumlahlamp = 0
 
         pygame.display.update()
         FPSCLOCK.tick(FPS)
@@ -222,23 +236,30 @@ def animasimati():
 
 def animasilevel(jumlahlamplist,waktu):
     lamp = initlampu()
-
+    jumlahlamplist = shufflejumlahlamplist(jumlahlamplist)
     for count in range(len(jumlahlamplist)):
         refreshlampu(lamp)
         pygame.display.update()
         pygame.time.wait(100)
 
-        kolom = random.choice(range(WIDTHBOARD))
-        baris = random.choice(range(HEIGHTBOARD))
-        if (kolom,baris) in jumlahlamplist:
-            kolom = random.choice(range(WIDTHBOARD))
-            baris = random.choice(range(HEIGHTBOARD))
-
-        jumlahlamplist[count] = (kolom,baris)
+        kolom,baris = jumlahlamplist[count]
         buatlampu(NYALA,kolom,baris)
         pygame.display.update()
         pygame.time.wait(waktu)
     return jumlahlamplist
 
+def shufflejumlahlamplist(jumlahlamplist):
+    count = 0
+    while True:
+        kolom = random.choice(range(WIDTHBOARD))
+        baris = random.choice(range(HEIGHTBOARD))
+        if (kolom,baris) in jumlahlamplist:
+            continue
+        jumlahlamplist[count] = (kolom,baris)
+        count += 1
+        if count == len(jumlahlamplist):
+            break
+    return jumlahlamplist
+        
 if __name__ == '__main__':
     main()
