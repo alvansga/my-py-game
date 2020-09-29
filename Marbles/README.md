@@ -5,6 +5,9 @@ How to play:
  - jump the marble until the last one standing
 
 Author's rate:
-> Fun           * * * *
-> Concentrate   * * * * *
-> Complexity    * *
+
+Fun           * * * *
+
+Concentrate   * * * * *
+
+Complexity    * *
