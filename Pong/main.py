@@ -87,11 +87,14 @@ def main():
     win = False
 
     while True:
+        DISPLAYSURF.fill(BGCOLOR1)
+        bola.StartMoving(DISPLAYSURF)
+        bola.CollideCheck(LEBARWINDOW,TINGGIWINDOW)
         mouseklik = False
         mouserelease = False
 
         for event in pygame.event.get():
-            if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
+            if event.type == QUIT or (event.type == KEYUP and (event.key == K_ESCAPE or event.key == K_q)):
                 pygame.quit()
                 sys.exit()
             

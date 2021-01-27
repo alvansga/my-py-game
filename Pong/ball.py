@@ -1,4 +1,5 @@
 import pygame
+from random import choice
 
 # warna yang dibutuhkan
 #               R   G   B
@@ -15,35 +16,70 @@ HITAM       = (  0,  0,  0)
 ABU2        = ( 10, 10, 10)
 ABU2_1      = ( 20, 20, 20)
 
-#dark theme
-# BGCOLOR1 = HITAM
-# BGCOLOR2 = ABU2
 
-# MARBLECOLOR = ABU2_1
-# MARBLECOLOR2 = HITAM
-# RINGCOLOR = ABU2
-# BOARDCOLOR = HITAM
-# BOARDCOLOR2 = ABU2
-# WINTEKSCOLOR = PUTIH
+BALLCOLOR = JINGGA
 
-#original
-BGCOLOR1 = BIRU
-BGCOLOR2 = LIMEHIJAU
+BALLSPEED = 50
+BALLSIZE = 32
+BALLRADIUS = int (BALLSIZE * 0.5)
 
-MARBLECOLOR = JINGGA
-MARBLECOLOR2 = JINGGATUA
-RINGCOLOR = PUTIH
-BOARDCOLOR = BIRU
-BOARDCOLOR2 = BIRUTUA
-WINTEKSCOLOR = PUTIH
-
-UKURANMARBLE = 16
-JARI2MARBLE = int (UKURANMARBLE* 0.5)
+def pickRandomDirection(dir):
+    if dir == 'everywhere':
+        # ret = [(1,1),(1,-1),(-1,1),(-1,-1),(0,1),(1,0),(0,-1),(-1,0)]
+        ret = [(1,1),(1,-1),(-1,1),(-1,-1)]
+    elif dir == 'down':
+        # ret = [(1,1),(0,1),(-1,1)]
+        ret = [(1,1),(-1,1)]
+    elif dir == 'up':
+        # ret = [(1,-1),(0,-1),(-1,-1)]
+        ret = [(1,-1),(-1,-1)]
+    elif dir == 'right':
+        # ret = [(1,0),(1,-1),(1,1)]
+        ret = [(1,-1),(1,1)]
+    elif dir == 'left':
+        # ret = [(-1,-1),(-1,0),(-1,1)]
+        ret = [(-1,-1),(-1,1)]
+    else:
+        print("warning in pickRandomDirection!")
+        ret = []
+    return choice(ret)
 
 class Ball():
     def __init__(self,DISPLAYSURF,left,top):
         self.pos = (left,top)
-        self.r = JARI2MARBLE
+        self.r = BALLRADIUS
+        self.speed = BALLSPEED
         self.d = self.r * 2
-        self.color = MARBLECOLOR
+        self.color = BALLCOLOR
         pygame.draw.circle(DISPLAYSURF,self.color,self.pos,self.r)
+        self.initdir = pickRandomDirection('everywhere')
+        self.dir = self.initdir
+
+    def StartMoving(self,DISPLAYSURF):
+        # need to fill blank first
+        (left,top) = self.pos
+        self.pos = (left + (self.dir[0] * self.speed),top + (self.dir[1] * self.speed))
+        pygame.draw.circle(DISPLAYSURF,self.color,self.pos,self.r)
+
+
+    def CollideCheck(self,width,height):
+        # check perimeter and change direction if collide with window perimeter
+        if (self.pos[1] - self.r) < 0 + 1:
+            # print(self.pos[1] - self.r)
+            # self.dir = pickRandomDirection('down')
+            self.dir = (self.dir[0],1)
+        elif (self.pos[0] - self.r) < 0 + 1:
+            # print(self.pos[0] - self.r)
+            # self.dir = pickRandomDirection('right')
+            self.dir = (1,self.dir[1])
+        elif (self.pos[1] + self.r) > height - 1:
+            # print(self.pos[1] + self.r)
+            # self.dir = pickRandomDirection('up')
+            self.dir = (self.dir[0],-1)
+        elif (self.pos[0] + self.r) > width - 1:
+            # print(self.pos[0] + self.r)
+            # self.dir = pickRandomDirection('left')
+            self.dir = (-1,self.dir[1])
+        else:
+            # masih dalam frame
+            pass
