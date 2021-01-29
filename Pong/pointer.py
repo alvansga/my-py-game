@@ -24,11 +24,15 @@ class Pointer():
     def __init__(self):
         self.pos = (0,0) # init pos
         self.r = POINTERRADIUS
+        self.d = self.r * 2
+        self.perim = (self.pos[0]-self.r,self.pos[1]-self.r,self.pos[0]+self.r,self.pos[1]+self.r)
         self.color = POINTERCOLOR
         self.color2 = POINTERCOLOR2
         pygame.mouse.set_visible(False)
 
     def DrawPointer(self,DISPLAYSURF,pos):
         self.pos = pos
-        pygame.draw.circle(DISPLAYSURF,self.color,self.pos,self.r)
+        self.perim = (self.pos[0]-self.r,self.pos[1]-self.r,self.pos[0]+self.r,self.pos[1]+self.r)
+        # print("pointer:",self.perim)
+        self.rect = pygame.draw.circle(DISPLAYSURF,self.color,self.pos,self.r)
         pygame.draw.circle(DISPLAYSURF,self.color2,self.pos,self.r-int(self.r/3))

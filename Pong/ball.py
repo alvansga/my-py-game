@@ -49,9 +49,11 @@ class Ball():
         self.pos = (left,top)
         self.r = BALLRADIUS
         self.speed = BALLSPEED
+        self.perim = (self.pos[0]-self.r,self.pos[1]-self.r,self.pos[0]+self.r,self.pos[1]+self.r)
+        
         self.d = self.r * 2
         self.color = BALLCOLOR
-        pygame.draw.circle(DISPLAYSURF,self.color,self.pos,self.r)
+        self.rect = pygame.draw.circle(DISPLAYSURF,self.color,self.pos,self.r)
         self.initdir = pickRandomDirection('everywhere')
         self.dir = self.initdir
 
@@ -59,10 +61,12 @@ class Ball():
         # need to fill blank first
         (left,top) = self.pos
         self.pos = (left + (self.dir[0] * self.speed),top + (self.dir[1] * self.speed))
-        pygame.draw.circle(DISPLAYSURF,self.color,self.pos,self.r)
+        self.perim = (self.pos[0]-self.r,self.pos[1]-self.r,self.pos[0]+self.r,self.pos[1]+self.r)
+        # print("ball:",self.perim)
+        self.rect = pygame.draw.circle(DISPLAYSURF,self.color,self.pos,self.r)
 
 
-    def CollideCheck(self,width,height):
+    def CollideWindow(self,width,height):
         # check perimeter and change direction if collide with window perimeter
         if (self.pos[1] - self.r) < 0 + 1:
             # print(self.pos[1] - self.r)
@@ -83,3 +87,8 @@ class Ball():
         else:
             # masih dalam frame
             pass
+
+    def CollideSomething(self,objek):
+        if self.rect.colliderect(objek):
+            print("collision")
+            self.dir = pickRandomDirection('everywhere')

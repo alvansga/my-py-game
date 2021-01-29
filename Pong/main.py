@@ -81,7 +81,20 @@ def main():
     pygame.display.set_caption('Pong')
     # player = pygame.image.load("media/marble.png")
     # DISPLAYSURF.blit(player,(0,0))
-    bola = Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2))
+    bola = []
+    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
+    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
+    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
+    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
+    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
+    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
+    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
+    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
+    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
+    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
+    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
+    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
+    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
     xmouse = 0
     ymouse = 0
     pointer = Pointer()
@@ -92,8 +105,10 @@ def main():
 
     while True:
         DISPLAYSURF.fill(BGCOLOR1)
-        bola.StartMoving(DISPLAYSURF)
-        bola.CollideCheck(LEBARWINDOW,TINGGIWINDOW)
+        for obj in bola:
+            obj.StartMoving(DISPLAYSURF)
+            obj.CollideWindow(LEBARWINDOW,TINGGIWINDOW)
+            obj.CollideSomething(pointer)
         mouseklik = False
         mouserelease = False
 
