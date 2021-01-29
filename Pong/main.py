@@ -8,9 +8,11 @@
 import pygame,sys,random
 from pygame.locals import *
 from ball import *
+from pointer import *
+
 FPS = 60
-LEBARWINDOW = 320
-TINGGIWINDOW = 480
+LEBARWINDOW = 160
+TINGGIWINDOW = 240
 
 UKURANMARBLE = 36
 JARI2MARBLE = int (UKURANMARBLE* 0.5)
@@ -82,6 +84,8 @@ def main():
     bola = Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2))
     xmouse = 0
     ymouse = 0
+    pointer = Pointer()
+    pointer.DrawPointer(DISPLAYSURF,(xmouse,ymouse))
     prevselect = (None,None)
     mousehold = False
     win = False
@@ -107,16 +111,21 @@ def main():
                 xmouse, ymouse = event.pos
                 mousehold = False
                 mouserelease = True
+                
 
             elif event.type == MOUSEBUTTONDOWN:
                 xmouse, ymouse = event.pos
                 mouseklik = True
                 print("mouse tekan")
 
+
             elif event.type == MOUSEMOTION:
                 xmouse, ymouse = event.pos
+                # print(xmouse,",",ymouse)
 
-        
+            
+                
+        pointer.DrawPointer(DISPLAYSURF,(xmouse,ymouse))
         pygame.display.update()
         FPSCLOCK.tick(FPS)
 

@@ -19,8 +19,8 @@ ABU2_1      = ( 20, 20, 20)
 
 BALLCOLOR = JINGGA
 
-BALLSPEED = 50
-BALLSIZE = 32
+BALLSPEED = 1
+BALLSIZE = 24
 BALLRADIUS = int (BALLSIZE * 0.5)
 
 def pickRandomDirection(dir):
