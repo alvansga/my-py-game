@@ -92,10 +92,13 @@ def main():
     marbles = setLevel(level)
 
     while True:
+        
+
         mouseklik = False
         mouserelease = False
         gambarBG(level)
         refreshMarble(marbles)
+        
         
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
@@ -179,13 +182,17 @@ def gambarWadah(boxx,boxy):
 def gambarObjek(bentuk,boxx,boxy):
     left,top = lefttopkoordinatbox(boxx,boxy)
     if bentuk == MARBLE:
-        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(left+JARI2MARBLE+2,top+JARI2MARBLE+2),JARI2MARBLE)
-        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE)
+        marble = pygame.image.load("resource/marbles.png")
+        DISPLAYSURF.blit(marble,(left,top))
+        # pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(left+JARI2MARBLE+2,top+JARI2MARBLE+2),JARI2MARBLE)
+        # pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE)
     elif bentuk == RING:
         pygame.draw.circle(DISPLAYSURF,RINGCOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE+3,3)
     elif bentuk == CURMARBLE:
-        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(boxx+2,boxy+2),JARI2MARBLE)
-        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(boxx,boxy),JARI2MARBLE)
+        marble = pygame.image.load("resource/marbles.png")
+        DISPLAYSURF.blit(marble,(boxx-17,boxy-17))
+        # pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(boxx+2,boxy+2),JARI2MARBLE)
+        # pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(boxx,boxy),JARI2MARBLE)
 
 def sentuhMarble(x,y):
     for boxx in range(LEBARPAPAN):
