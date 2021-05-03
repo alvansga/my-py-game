@@ -9,6 +9,7 @@ import pygame,sys,random
 from pygame.locals import *
 from ball import *
 from pointer import *
+from random import choice
 
 FPS = 60
 LEBARWINDOW = 160
@@ -82,19 +83,8 @@ def main():
     # player = pygame.image.load("media/marble.png")
     # DISPLAYSURF.blit(player,(0,0))
     bola = []
-    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
-    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
-    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
-    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
-    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
-    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
-    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
-    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
-    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
-    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
-    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
-    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
-    bola.append(Ball(DISPLAYSURF,int(LEBARWINDOW/2),int(TINGGIWINDOW/2)))
+    bola.append(Ball(DISPLAYSURF,choice(range(LEBARWINDOW)),choice(range(TINGGIWINDOW))))
+    bola.append(Ball(DISPLAYSURF,choice(range(LEBARWINDOW)),choice(range(TINGGIWINDOW))))
     xmouse = 0
     ymouse = 0
     pointer = Pointer()
@@ -108,6 +98,10 @@ def main():
         for obj in bola:
             obj.StartMoving(DISPLAYSURF)
             obj.CollideWindow(LEBARWINDOW,TINGGIWINDOW)
+            for i in range(len(bola)):
+                if bola[i] == obj:
+                    break
+                obj.CollideSomething(bola[i])
             obj.CollideSomething(pointer)
         mouseklik = False
         mouserelease = False
