@@ -12,9 +12,14 @@ FPS = 60
 LEBARWINDOW = 480
 TINGGIWINDOW = 480
 
-UKURANMARBLE = 36
+if (LEBARWINDOW == TINGGIWINDOW and LEBARWINDOW == 480):
+    SCALE = 1
+# else if (LEBARWINDOW == TINGGIWINDOW and LEBARWINDOW > 480):
+#     SCALE = int(LEBARWINDOW)
+
+UKURANMARBLE = int(36*SCALE)
 JARI2MARBLE = int (UKURANMARBLE* 0.5)
-UKURANCELAH = 10
+UKURANCELAH = int(10*SCALE)
 
 LEBARPAPAN = 7
 TINGGIPAPAN = 7
@@ -71,10 +76,10 @@ CURMARBLE = 'curmarble'
 RING = 'ring'
 
 def main():
-    global FPSCLOCK, DISPLAYSURF
+    global FPSCLOCK, DISPLAYSURF, LEBARWINDOW,TINGGIWINDOW, UKURANCELAH,UKURANMARBLE,JARI2MARBLE, XMARGIN, YMARGIN, SCALE
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
-    DISPLAYSURF = pygame.display.set_mode((LEBARWINDOW,TINGGIWINDOW))
+    DISPLAYSURF = pygame.display.set_mode((LEBARWINDOW,TINGGIWINDOW),RESIZABLE)
     pygame.display.set_caption('Marbles')
 
     xmouse = 0
@@ -123,6 +128,30 @@ def main():
             elif event.type == MOUSEMOTION:
                 xmouse, ymouse = event.pos
 
+            elif event.type == VIDEORESIZE:
+                screen = pygame.display.set_mode(
+                    event.dict['size'], HWSURFACE | DOUBLEBUF | RESIZABLE)
+                pic = pygame.image.load("resource/marbles.png")
+                screen.blit(pygame.transform.scale(pic, event.dict['size']), (0, 0))
+                (LEBARWINDOW, TINGGIWINDOW) = event.dict['size']
+                
+                if (LEBARWINDOW == TINGGIWINDOW and LEBARWINDOW == 480):
+                    SCALE = 1
+                elif (LEBARWINDOW > TINGGIWINDOW and LEBARWINDOW != 480 and TINGGIWINDOW != 480):
+                    SCALE = float(TINGGIWINDOW/480)
+                else:
+                    SCALE = float(LEBARWINDOW/480)
+                print("SCALE:",SCALE,"LEBARWINDOW:",LEBARWINDOW,"TINGGIWINDOW:",TINGGIWINDOW)
+
+                UKURANMARBLE = int(36*SCALE)
+                JARI2MARBLE = int (UKURANMARBLE* 0.5)
+                UKURANCELAH = int(10*SCALE)
+
+                                #ukuran margin
+                XMARGIN = int((LEBARWINDOW - (LEBARPAPAN * (UKURANMARBLE + UKURANCELAH))) / 2)
+                YMARGIN = int((TINGGIWINDOW - (TINGGIPAPAN * (UKURANMARBLE + UKURANCELAH))) / 2)
+                pygame.display.flip()
+
         tampillevel(level)
         tampilauthor()
         if tampilReset(xmouse,ymouse,mouseklik) == True:
@@ -167,34 +196,39 @@ def main():
         FPSCLOCK.tick(FPS)
 
 def lefttopkoordinatbox(boxx,boxy):
+    global UKURANCELAH,UKURANMARBLE,JARI2MARBLE, XMARGIN, YMARGIN
     left = boxx * (UKURANMARBLE + UKURANCELAH) + XMARGIN
     top = boxy * (UKURANMARBLE + UKURANCELAH) + YMARGIN
     return (left,top)
 
 def gambarWadah2(boxx,boxy):
+    global UKURANCELAH,UKURANMARBLE,JARI2MARBLE
     left,top = lefttopkoordinatbox(boxx,boxy)
     pygame.draw.circle(DISPLAYSURF,BOARDCOLOR2,(left+JARI2MARBLE+3,top+JARI2MARBLE+3),JARI2MARBLE+15)
 
 def gambarWadah(boxx,boxy):
+    global UKURANCELAH,UKURANMARBLE,JARI2MARBLE
     left,top = lefttopkoordinatbox(boxx,boxy)
     pygame.draw.circle(DISPLAYSURF,BOARDCOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE+10)
 
 def gambarObjek(bentuk,boxx,boxy):
+    global UKURANCELAH,UKURANMARBLE,JARI2MARBLE
     left,top = lefttopkoordinatbox(boxx,boxy)
     if bentuk == MARBLE:
-        marble = pygame.image.load("resource/marbles.png")
-        DISPLAYSURF.blit(marble,(left,top))
-        # pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(left+JARI2MARBLE+2,top+JARI2MARBLE+2),JARI2MARBLE)
-        # pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE)
+        # marble = pygame.image.load("resource/marbles.png")
+        # DISPLAYSURF.blit(marble,(left,top))
+        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(left+JARI2MARBLE+2,top+JARI2MARBLE+2),JARI2MARBLE)
+        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE)
     elif bentuk == RING:
         pygame.draw.circle(DISPLAYSURF,RINGCOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE+3,3)
     elif bentuk == CURMARBLE:
-        marble = pygame.image.load("resource/marbles.png")
-        DISPLAYSURF.blit(marble,(boxx-17,boxy-17))
-        # pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(boxx+2,boxy+2),JARI2MARBLE)
-        # pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(boxx,boxy),JARI2MARBLE)
+        # marble = pygame.image.load("resource/marbles.png")
+        # DISPLAYSURF.blit(marble,(boxx-17,boxy-17))
+        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(boxx+2,boxy+2),JARI2MARBLE)
+        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(boxx,boxy),JARI2MARBLE)
 
 def sentuhMarble(x,y):
+    global UKURANCELAH,UKURANMARBLE,JARI2MARBLE
     for boxx in range(LEBARPAPAN):
         for boxy in range(TINGGIPAPAN):
             left, top = lefttopkoordinatbox(boxx,boxy)
@@ -250,6 +284,7 @@ def hitungmarbles(marbles):
     return jum
 
 def wincelebration(randomcongrats):
+    global LEBARWINDOW,TINGGIWINDOW
     settingFont = pygame.font.Font('freesansbold.ttf',36)
     permukaanteks = settingFont.render(randomcongrats,True,WINTEKSCOLOR)
     teksRectObj = permukaanteks.get_rect()
@@ -369,14 +404,14 @@ def setLevel(level):
     return marbles
 
 def tampilReset(x,y,mouseklik):
-    fontsize = 20
+    fontsize = 40
     settingFont = pygame.font.SysFont('Arial.ttf',fontsize)
     permukaanteks = settingFont.render('Reset',True,WINTEKSCOLOR)
     teksRectObj = permukaanteks.get_rect()
     teksRectObj.topleft = (0,0)
 
     if teksRectObj.collidepoint(x,y):
-        fontsize = 22
+        fontsize = 44
         settingFont = pygame.font.SysFont('Arial.ttf',fontsize)
         permukaanteks = settingFont.render('Reset',True,KUNING)
         teksRectObj = permukaanteks.get_rect()
@@ -389,13 +424,14 @@ def tampilReset(x,y,mouseklik):
     DISPLAYSURF.blit(permukaanteks,teksRectObj)
     
 def tampilNewLevel(x,y,mouseklik):
-    fontsize = 20
+    global LEBARWINDOW,TINGGIWINDOW
+    fontsize = 40
     settingFont = pygame.font.SysFont('Calibri.ttf',fontsize)
     permukaanteks = settingFont.render('Next Level',True,WINTEKSCOLOR)
     teksRectObj = permukaanteks.get_rect()
     teksRectObj.topright = (LEBARWINDOW,0)
     if teksRectObj.collidepoint(x,y):
-        fontsize = 22
+        fontsize = 44
         settingFont = pygame.font.SysFont('Calibri.ttf',fontsize)
         permukaanteks = settingFont.render('Next Level',True,KUNING)
         teksRectObj = permukaanteks.get_rect()
@@ -420,7 +456,8 @@ def bacapola(pola,marbles):
     return marbles
 
 def tampilauthor():
-    fontsize = 18
+    global LEBARWINDOW,TINGGIWINDOW
+    fontsize = 36
     settingFont = pygame.font.SysFont('Arial.ttf',fontsize)
     permukaanteks = settingFont.render('@zralvansga',True,BIRUTUA)
     teksRectObj = permukaanteks.get_rect()
@@ -429,7 +466,8 @@ def tampilauthor():
     DISPLAYSURF.blit(permukaanteks,teksRectObj)
 
 def tampillevel(level):
-    fontsize = 24
+    global LEBARWINDOW,TINGGIWINDOW
+    fontsize = 48
     settingFont = pygame.font.SysFont('Arial.ttf',fontsize)
     permukaanteks = settingFont.render("LEVEL "+str(level),True,WINTEKSCOLOR)
     teksRectObj = permukaanteks.get_rect()
