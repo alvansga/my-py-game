@@ -215,17 +215,17 @@ def gambarObjek(bentuk,boxx,boxy):
     global UKURANCELAH,UKURANMARBLE,JARI2MARBLE
     left,top = lefttopkoordinatbox(boxx,boxy)
     if bentuk == MARBLE:
-        # marble = pygame.image.load("resource/marbles.png")
-        # DISPLAYSURF.blit(marble,(left,top))
-        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(left+JARI2MARBLE+2,top+JARI2MARBLE+2),JARI2MARBLE)
-        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE)
+        marble = pygame.image.load("resource/marbles.png")
+        DISPLAYSURF.blit(pygame.transform.scale(marble,(int(JARI2MARBLE*2),int(JARI2MARBLE*2))),(left,top))
+        # pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(left+JARI2MARBLE+2,top+JARI2MARBLE+2),JARI2MARBLE)
+        # pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE)
     elif bentuk == RING:
         pygame.draw.circle(DISPLAYSURF,RINGCOLOR,(left+JARI2MARBLE,top+JARI2MARBLE),JARI2MARBLE+3,3)
     elif bentuk == CURMARBLE:
-        # marble = pygame.image.load("resource/marbles.png")
-        # DISPLAYSURF.blit(marble,(boxx-17,boxy-17))
-        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(boxx+2,boxy+2),JARI2MARBLE)
-        pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(boxx,boxy),JARI2MARBLE)
+        marble = pygame.image.load("resource/marbles.png")
+        DISPLAYSURF.blit(pygame.transform.scale(marble,(int(JARI2MARBLE*2),int(JARI2MARBLE*2))),(boxx-17,boxy-17))
+        # pygame.draw.circle(DISPLAYSURF,MARBLECOLOR2,(boxx+2,boxy+2),JARI2MARBLE)
+        # pygame.draw.circle(DISPLAYSURF,MARBLECOLOR,(boxx,boxy),JARI2MARBLE)
 
 def sentuhMarble(x,y):
     global UKURANCELAH,UKURANMARBLE,JARI2MARBLE
