@@ -12,7 +12,12 @@ IRKEY_DOWN = "0x800d"
 IRKEY_RIGHT = "0x800e"
 IRKEY_LEFT = "0x800f"
 
-def updateScreen(screen,serv):
+class Game():
+    def __init__(self):
+        self.serv = 0
+        self.skor = [[]]
+
+def updateScreen(screen, game):
     pygame.draw.rect(screen, (150,0,0), pygame.Rect(0, 0, 1366//2, 768))
     pygame.draw.rect(screen, (0,0,150), pygame.Rect(1366//2, 0, 1366//2, 768))
     pygame.draw.rect(screen, (100,0,0), pygame.Rect(0, 0, 1366//2, 64))
@@ -29,9 +34,9 @@ def updateScreen(screen,serv):
     textRect.center = ((1366//2) + 1366//2 // 2, 64 + 768 // 2)
     screen.blit(text, textRect)
 
-    if serv == 0:
+    if game.serv == 0:
         pygame.draw.circle(screen, (255,255,255), (1366//2 - 32, 64//2 ), 24)
-    elif serv == 1:
+    elif game.serv == 1:
         pygame.draw.circle(screen, (255,255,255), (1366//2 + 32, 64//2 ), 24)
 
     pygame.display.flip()
@@ -53,11 +58,11 @@ def main():
     # define a variable to control the main loop
     running = True
     
-    serv = 0
+    room = Game()
 
     # main loop
     while running:
-        updateScreen(screen, serv)
+        updateScreen(screen, room)
         # event handling, gets all event from the event queue
         for event in pygame.event.get():
             # only do something if the event is of type QUIT
@@ -75,13 +80,13 @@ def main():
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT):
                 # screen.fill((0,0,128))
-                serv = 1
-                updateScreen(screen, serv)
+                room.serv = 1
+                updateScreen(screen, room)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT):
                 # screen.fill((128,0,128))
-                serv = 0
-                updateScreen(screen, serv)
+                room.serv = 0
+                updateScreen(screen, room)
                 pass
 
         # for event in dev.read_loop():

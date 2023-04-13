@@ -1,6 +1,7 @@
 # import the pygame module, so you can use it
 import pygame
 import evdev
+dev = evdev.InputDevice('/dev/input/event3')
  
 
 IRKEY_EXIT = "0x804b"
@@ -11,7 +12,12 @@ IRKEY_DOWN = "0x800d"
 IRKEY_RIGHT = "0x800e"
 IRKEY_LEFT = "0x800f"
 
-def updateScreen(screen,serv):
+class Game():
+    def __init__(self):
+        self.serv = 0
+        self.skor = [[]]
+
+def updateScreen(screen, game):
     pygame.draw.rect(screen, (150,0,0), pygame.Rect(0, 0, 1366//2, 768))
     pygame.draw.rect(screen, (0,0,150), pygame.Rect(1366//2, 0, 1366//2, 768))
     pygame.draw.rect(screen, (100,0,0), pygame.Rect(0, 0, 1366//2, 64))
@@ -28,15 +34,13 @@ def updateScreen(screen,serv):
     textRect.center = ((1366//2) + 1366//2 // 2, 64 + 768 // 2)
     screen.blit(text, textRect)
 
-    if serv == 0:
+    if game.serv == 0:
         pygame.draw.circle(screen, (255,255,255), (1366//2 - 32, 64//2 ), 24)
-    elif serv == 1:
+    elif game.serv == 1:
         pygame.draw.circle(screen, (255,255,255), (1366//2 + 32, 64//2 ), 24)
 
     pygame.display.flip()
 
-
-dev = evdev.InputDevice('/dev/input/event3')
 # define a main function
 def main():
      
@@ -48,16 +52,16 @@ def main():
     pygame.display.set_caption("minimal program")
      
     # create a surface on screen that has the size of 240 x 180
-    screen = pygame.display.set_mode((1366,768), pygame.FULLSCREEN)
+    screen = pygame.display.set_mode((1366,768) , pygame.FULLSCREEN)
      
     # define a variable to control the main loop
     running = True
     
-    serv = 0
+    room = Game()
 
     # main loop
     while running:
-        updateScreen(screen, serv)
+        updateScreen(screen, room)
         # event handling, gets all event from the event queue
         for event in pygame.event.get():
             # only do something if the event is of type QUIT
@@ -65,17 +69,24 @@ def main():
                 # change the value to False, to exit the main loop
                 running = False
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
-                screen.fill((255,255,255))
+                # screen.fill((255,255,255))
+                pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_UP):
-                screen.fill((128,0,0))
+                # screen.fill((128,0,0))
+                pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN):
-                screen.fill((0,128,0))
+                # screen.fill((0,128,0))
+                pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT):
-                screen.fill((0,0,128))
+                # screen.fill((0,0,128))
+                room.serv = 1
+                updateScreen(screen, room)
+                pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT):
-                screen.fill((128,0,128))
-
-        pygame.display.flip()
+                # screen.fill((128,0,128))
+                room.serv = 0
+                updateScreen(screen, room)
+                pass
 
         for event in dev.read_loop():
         #	print(evdev.categorize(event))
@@ -96,18 +107,18 @@ def main():
                 pass
             elif hex(event.value) == IRKEY_RIGHT:
                 # screen.fill((0,0,128))
-                serv = 1
-                updateScreen(screen, serv)
+                room.serv = 1
+                updateScreen(screen, room)
                 pass
             elif hex(event.value) == IRKEY_LEFT:
                 # screen.fill((128,0,128))
-                serv = 0
-                updateScreen(screen, serv)
+                room.serv = 0
+                updateScreen(screen, room)
                 pass
             
-            print("\nCode:",hex(event.value))
-            print("---------------")
-            pass
+        #     print("\nCode:",hex(event.value))
+        #     print("---------------")
+        #     pass
      
      
 # run the main function only if this module is executed as the main script
