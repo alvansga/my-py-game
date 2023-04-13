@@ -1,0 +1,5 @@
+just for linux 
+
+apt install python3-pygame python3-evdev 
+
+there are problems when installing package from pip 
