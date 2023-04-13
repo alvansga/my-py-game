@@ -15,7 +15,7 @@ IRKEY_LEFT = "0x800f"
 class Game():
     def __init__(self):
         self.serv = 0
-        self.skor = [[]]
+        self.skor = [[0,0]]
 
 def updateScreen(screen, game):
     pygame.draw.rect(screen, (150,0,0), pygame.Rect(0, 0, 1366//2, 768))
