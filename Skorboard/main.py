@@ -11,6 +11,30 @@ IRKEY_DOWN = "0x800d"
 IRKEY_RIGHT = "0x800e"
 IRKEY_LEFT = "0x800f"
 
+def updateScreen(screen,serv):
+    pygame.draw.rect(screen, (150,0,0), pygame.Rect(0, 0, 1366//2, 768))
+    pygame.draw.rect(screen, (0,0,150), pygame.Rect(1366//2, 0, 1366//2, 768))
+    pygame.draw.rect(screen, (100,0,0), pygame.Rect(0, 0, 1366//2, 64))
+    pygame.draw.rect(screen, (0,0,100), pygame.Rect(1366//2, 0, 1366//2, 64))
+
+    font = pygame.font.Font('freesansbold.ttf', 512)
+    text = font.render('0', True, (0,0,0))
+    textRect = text.get_rect()
+    textRect.center = (1366//2 // 2, 64 + 768 // 2)
+    screen.blit(text, textRect)
+
+    text = font.render('0', True, (0,0,0))
+    textRect = text.get_rect()
+    textRect.center = ((1366//2) + 1366//2 // 2, 64 + 768 // 2)
+    screen.blit(text, textRect)
+
+    if serv == 0:
+        pygame.draw.circle(screen, (255,255,255), (1366//2 - 32, 64//2 ), 24)
+    elif serv == 1:
+        pygame.draw.circle(screen, (255,255,255), (1366//2 + 32, 64//2 ), 24)
+
+    pygame.display.flip()
+
 
 dev = evdev.InputDevice('/dev/input/event3')
 # define a main function
@@ -28,9 +52,12 @@ def main():
      
     # define a variable to control the main loop
     running = True
-     
+    
+    serv = 0
+
     # main loop
     while running:
+        updateScreen(screen, serv)
         # event handling, gets all event from the event queue
         for event in pygame.event.get():
             # only do something if the event is of type QUIT
@@ -39,46 +66,47 @@ def main():
                 running = False
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE):
                 screen.fill((255,255,255))
-                pygame.display.flip()
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_UP):
                 screen.fill((128,0,0))
-                pygame.display.flip()
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN):
                 screen.fill((0,128,0))
-                pygame.display.flip()
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT):
                 screen.fill((0,0,128))
-                pygame.display.flip()
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT):
                 screen.fill((128,0,128))
-                pygame.display.flip()
+
+        pygame.display.flip()
 
         for event in dev.read_loop():
         #	print(evdev.categorize(event))
             if hex(event.value) == "0x0":
                 continue
-            elif hex(event.value) == IRKEY_EXIT:
-                running = False
-                print("exiting...")
-                break
+            # elif hex(event.value) == IRKEY_EXIT:
+            #     running = False
+            #     print("exiting...")
+            #     break
             elif hex(event.value) == IRKEY_MENU:
-                screen.fill((0,0,0))
-                pygame.display.flip()
+                # screen.fill((0,0,0))
+                pass
             elif hex(event.value) == IRKEY_UP:
-                screen.fill((128,0,0))
-                pygame.display.flip()
+                # screen.fill((128,0,0))
+                pass
             elif hex(event.value) == IRKEY_DOWN:
-                screen.fill((0,128,0))
-                pygame.display.flip()
+                # screen.fill((0,128,0))
+                pass
             elif hex(event.value) == IRKEY_RIGHT:
-                screen.fill((0,0,128))
-                pygame.display.flip()
+                # screen.fill((0,0,128))
+                serv = 1
+                updateScreen(screen, serv)
+                pass
             elif hex(event.value) == IRKEY_LEFT:
-                screen.fill((128,0,128))
-                pygame.display.flip()
+                # screen.fill((128,0,128))
+                serv = 0
+                updateScreen(screen, serv)
+                pass
             
-            #print("\nCode:",hex(event.value))
-            #print("---------------")
+            print("\nCode:",hex(event.value))
+            print("---------------")
             pass
      
      
