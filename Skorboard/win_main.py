@@ -7,8 +7,8 @@ import pygame
 CHGSERVAFTER = 2 # 2 or 5
 WIN_WIDTH = 640
 WIN_HEIGTH = 480
-L_COLOR = [180,0,0]
-R_COLOR = [0,0,180]
+L_COLOR = [40,40,40]#[180,0,0]
+R_COLOR = [255,255,255]#[0,0,180]
 CIRCLE_COLOR = [255,255,255]
 # -------------
 
@@ -34,30 +34,31 @@ class Game():
 def checkService(game):
     if sum(game.skor[len(game.skor)-1]) % CHGSERVAFTER == 0:
         game.serv = ~game.serv #toggle
-    
-def shadowColor(list_col):
-    ret = list()
-    for ele in list_col:
-        if ele > 50:
-            ret.append(ele-50)
-        else:
-            ret.append(ele)
-    return ret
 
 def updateScreen(screen, game):
     pygame.draw.rect(screen, L_COLOR, pygame.Rect(0, 0, WIN_WIDTH//2, WIN_HEIGTH))
     pygame.draw.rect(screen, R_COLOR, pygame.Rect(WIN_WIDTH//2, 0, WIN_WIDTH//2, WIN_HEIGTH))
-    pygame.draw.rect(screen, shadowColor(L_COLOR), pygame.Rect(0, 0, WIN_WIDTH//2, WIN_HEIGTH//12))
-    pygame.draw.rect(screen, shadowColor(R_COLOR), pygame.Rect(WIN_WIDTH//2, 0, WIN_WIDTH//2, WIN_HEIGTH//12))
+
+    top = pygame.Surface((WIN_WIDTH, WIN_HEIGTH//12))
+    top.set_alpha(128)
+    top.fill((0,0,0))
+    screen.blit(top,(0,0))
 
     font = pygame.font.Font('freesansbold.ttf', int(WIN_HEIGTH/1.5))
-
-    text = font.render(str(game.skor[len(game.skor)-1][TEAM_LEFT]), True, (0,0,0))
+    if sum(L_COLOR) < 150:
+        txt_color = (255,255,255)
+    else:
+        txt_color = (0,0,0)
+    text = font.render(str(game.skor[len(game.skor)-1][TEAM_LEFT]), True, txt_color)
     textRect = text.get_rect()
     textRect.center = (WIN_WIDTH//2//2, WIN_HEIGTH//12 + WIN_HEIGTH//2)
     screen.blit(text, textRect)
 
-    text = font.render(str(game.skor[len(game.skor)-1][TEAM_RIGHT]), True, (0,0,0))
+    if sum(R_COLOR) < 180:
+        txt_color = (255,255,255)
+    else:
+        txt_color = (0,0,0)
+    text = font.render(str(game.skor[len(game.skor)-1][TEAM_RIGHT]), True, txt_color)
     textRect = text.get_rect()
     textRect.center = ((WIN_WIDTH//2) + WIN_WIDTH//2//2, WIN_HEIGTH//12 + WIN_HEIGTH//2)
     screen.blit(text, textRect)
