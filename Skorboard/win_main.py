@@ -1,18 +1,8 @@
 # import the pygame module, so you can use it
 import pygame
-import evdev
+# import evdev
  
-
-IRKEY_EXIT = "0x804b"
-IRKEY_MENU = "0x800b"
-
-IRKEY_UP = "0x800c"
-IRKEY_DOWN = "0x800d"
-IRKEY_RIGHT = "0x800e"
-IRKEY_LEFT = "0x800f"
-
-
-dev = evdev.InputDevice('/dev/input/event3')
+# dev = evdev.InputDevice('/dev/input/event3')
 # define a main function
 def main():
      
@@ -24,7 +14,8 @@ def main():
     pygame.display.set_caption("minimal program")
      
     # create a surface on screen that has the size of 240 x 180
-    screen = pygame.display.set_mode((1366,768), pygame.FULLSCREEN)
+    screen = pygame.display.set_mode((1366,768))
+    # screen = pygame.display.set_mode((1366,768), pygame.FULLSCREEN)
      
     # define a variable to control the main loop
     running = True
@@ -53,33 +44,29 @@ def main():
                 screen.fill((128,0,128))
                 pygame.display.flip()
 
-        for event in dev.read_loop():
-        #	print(evdev.categorize(event))
-            if hex(event.value) == "0x0":
-                continue
-            elif hex(event.value) == IRKEY_EXIT:
-                running = False
-                print("exiting...")
-                break
-            elif hex(event.value) == IRKEY_MENU:
-                screen.fill((0,0,0))
-                pygame.display.flip()
-            elif hex(event.value) == IRKEY_UP:
-                screen.fill((128,0,0))
-                pygame.display.flip()
-            elif hex(event.value) == IRKEY_DOWN:
-                screen.fill((0,128,0))
-                pygame.display.flip()
-            elif hex(event.value) == IRKEY_RIGHT:
-                screen.fill((0,0,128))
-                pygame.display.flip()
-            elif hex(event.value) == IRKEY_LEFT:
-                screen.fill((128,0,128))
-                pygame.display.flip()
+        # for event in dev.read_loop():
+        # #	print(evdev.categorize(event))
+        #     if hex(event.value) == "0x0":
+        #         continue
+        #     elif hex(event.value) == "0x800b":
+        #         screen.fill((255,255,255))
+        #         pygame.display.flip()
+        #     elif hex(event.value) == "0x800c":
+        #         screen.fill((128,0,0))
+        #         pygame.display.flip()
+        #     elif hex(event.value) == "0x800d":
+        #         screen.fill((0,128,0))
+        #         pygame.display.flip()
+        #     elif hex(event.value) == "0x800e":
+        #         screen.fill((0,0,128))
+        #         pygame.display.flip()
+        #     elif hex(event.value) == "0x800f":
+        #         screen.fill((128,0,128))
+        #         pygame.display.flip()
             
-            #print("\nCode:",hex(event.value))
-            #print("---------------")
-            pass
+        #     #print("\nCode:",hex(event.value))
+        #     #print("---------------")
+        #     pass
      
      
 # run the main function only if this module is executed as the main script
