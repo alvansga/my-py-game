@@ -141,64 +141,48 @@ def main():
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT):
                 # screen.fill((0,0,128))
                 room.serv = -1
-                updateScreen(screen, room)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT):
                 # screen.fill((128,0,128))
                 room.serv = 0
-                updateScreen(screen, room)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_1):
-                # screen.fill((128,0,0))
                 room.skor[len(room.skor)-1][TEAM_LEFT] += 1
                 checkService(room)
-                updateScreen(screen, room)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_3):
-                # screen.fill((128,0,0))
                 room.skor[len(room.skor)-1][TEAM_RIGHT] += 1
                 checkService(room)
-                updateScreen(screen, room)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_7):
                 # screen.fill((128,0,0))
                 room.skor[len(room.skor)-1][TEAM_LEFT] -= 1
                 checkService(room)
-                updateScreen(screen, room)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_9):
                 # screen.fill((128,0,0))
                 room.skor[len(room.skor)-1][TEAM_RIGHT] -= 1
                 checkService(room)
-                updateScreen(screen, room)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_5):
                 # screen.fill((128,0,0))
                 room.skor.append([0,0])
                 checkService(room)
-                updateScreen(screen, room)
                 print(room.skor)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_r):
                 # screen.fill((128,0,0))
                 room.reset()
                 checkService(room)
-                updateScreen(screen, room)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_s):
                 # screen.fill((128,0,0))
                 changeCourt(room)
-                updateScreen(screen, room)
                 print(room.skor)
                 pass
-            # if event.type == pygame.KEYDOWN:
-            #     print(room.skor)
-            #     print(event.key)
 
         for event in dev.read_loop():
-        #	print(evdev.categorize(event)) 
             if time.time() - stamp_time < 0.5:
-                print("after 0.5s")
                 break
             stamp_time = time.time()
             
@@ -219,66 +203,46 @@ def main():
                 pass
             elif hex(event.value) == IRKEY_RIGHT:
                 # screen.fill((0,0,128))
-                serv = 1
-                #updateScreen(screen, serv)
+                room.serv = -1
                 break
-                pass
             elif hex(event.value) == IRKEY_LEFT:
                 # screen.fill((128,0,128))
-                serv = 0
-                #updateScreen(screen, serv)
+                room.serv = 0
                 break
-                pass
             elif hex(event.value) == IRKEY_NUM1:
                 # screen.fill((0,128,0))
                 room.skor[len(room.skor)-1][TEAM_LEFT] += 1
                 checkService(room)
-                #updateScreen(screen, room)
                 break
-                pass
             elif hex(event.value) == IRKEY_NUM3:
                 room.skor[len(room.skor)-1][TEAM_RIGHT] += 1
                 checkService(room)
-                #updateScreen(screen, room)
                 break
-                pass
             elif hex(event.value) == IRKEY_NUM7:
                 room.skor[len(room.skor)-1][TEAM_LEFT] -= 1
                 checkService(room)
-                #updateScreen(screen, room)
                 break
-                pass
             elif hex(event.value) == IRKEY_NUM9:
                 room.skor[len(room.skor)-1][TEAM_RIGHT] -= 1
                 checkService(room)
-                #updateScreen(screen, room)
                 break
-                pass
             elif hex(event.value) == IRKEY_NUM5:
                 room.skor.append([0,0])
                 checkService(room)
-                #updateScreen(screen, room)
-                break
                 print(room.skor)
-                pass
+                break
             elif hex(event.value) == IRKEY_PRDOWN:
                 room.reset()
                 checkService(room)
-                #updateScreen(screen, room)
                 break
-                pass
             elif hex(event.value) == IRKEY_NUM0:
                 changeCourt(room)
-                #updateScreen(screen, room)
                 print(room.skor)
                 break
-                pass
-               
         #     print("\nCode:",hex(event.value))
         #     print("---------------")
             pass
-            
-     
+                 
 # run the main function only if this module is executed as the main script
 # (if you import this as a module then nothing is executed)
 if __name__=="__main__":
