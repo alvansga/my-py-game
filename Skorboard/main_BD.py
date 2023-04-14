@@ -38,7 +38,7 @@ def main():
     # define a variable to control the main loop
     running = True
     
-    room = Game("TT", 2)
+    room = Game("BD")
     stamp_time = time.time()
 
     # main loop
@@ -70,21 +70,21 @@ def main():
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_1):
                 room.skor[len(room.skor)-1][TEAM_LEFT] += 1
-                room.checkService()
+                room.checkService(0)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_3):
                 room.skor[len(room.skor)-1][TEAM_RIGHT] += 1
-                room.checkService()
+                room.checkService(-1)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_7):
                 # screen.fill((128,0,0))
                 room.skor[len(room.skor)-1][TEAM_LEFT] -= 1
-                room.checkService()
+                room.checkService(0)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_9):
                 # screen.fill((128,0,0))
                 room.skor[len(room.skor)-1][TEAM_RIGHT] -= 1
-                room.checkService()
+                room.checkService(-1)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_5):
                 # screen.fill((128,0,0))
@@ -134,19 +134,19 @@ def main():
             elif hex(event.value) == IRKEY_NUM1:
                 # screen.fill((0,128,0))
                 room.skor[len(room.skor)-1][TEAM_LEFT] += 1
-                room.checkService()
+                room.checkService(0)
                 break
             elif hex(event.value) == IRKEY_NUM3:
                 room.skor[len(room.skor)-1][TEAM_RIGHT] += 1
-                room.checkService()
+                room.checkService(-1)
                 break
             elif hex(event.value) == IRKEY_NUM7:
                 room.skor[len(room.skor)-1][TEAM_LEFT] -= 1
-                room.checkService()
+                room.checkService(0)
                 break
             elif hex(event.value) == IRKEY_NUM9:
                 room.skor[len(room.skor)-1][TEAM_RIGHT] -= 1
-                room.checkService()
+                room.checkService(-1)
                 break
             elif hex(event.value) == IRKEY_NUM5:
                 room.skor.append([0,0])
