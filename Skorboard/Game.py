@@ -14,6 +14,7 @@ TEAM_LEFT , TEAM_RIGHT = 0 , 1
 #sport: "TT" , "BD"
 TABLETENNIS = "TT"
 BADMINTON = "BD"
+VOLLEY = "VO"
 
 class Game():
     def __init__(self, sport, changeserv=2):
@@ -30,7 +31,7 @@ class Game():
         if game.sport == TABLETENNIS:
             if sum(game.skor[len(game.skor)-1]) % game.changeserv == 0:
                 game.serv = ~game.serv #toggle
-        elif game.sport == BADMINTON:
+        elif game.sport == BADMINTON or game.sport == VOLLEY:
             game.serv = leftorright
         else:
             print("unknown sport")
