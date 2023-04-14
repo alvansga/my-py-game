@@ -7,10 +7,10 @@ import pygame
 CHGSERVAFTER = 2 # 2 or 5
 WIN_WIDTH = 1366
 WIN_HEIGTH = 768
-L_COLOR = [40,40,40]#[180,0,0]
-R_COLOR = [255,255,255]#[0,0,180]
+L_COLOR = [150,0,0]#[180,0,0]
+R_COLOR = [0,0,150]#[0,0,180]
 SKORLIST_COLOR = [255,255,255]#[0,0,180]
-CIRCLE_COLOR = [150,150,150]
+CIRCLE_COLOR = [255,255,255]
 # -------------
 
 IRKEY_EXIT = "0x804b"
@@ -52,7 +52,7 @@ def updateScreen(screen, game):
     screen.blit(top,(0,0))
 
     font = pygame.font.Font('freesansbold.ttf', int(WIN_HEIGTH/1.5))
-    if sum(L_COLOR) < 150:
+    if sum(L_COLOR) < 180:
         txt_color = (255,255,255)
     else:
         txt_color = (0,0,0)
@@ -135,44 +135,44 @@ def main():
                 room.serv = 0
                 updateScreen(screen, room)
                 pass
-            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_1):
+            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_w):
                 # screen.fill((128,0,0))
                 room.skor[len(room.skor)-1][TEAM_LEFT] += 1
                 checkService(room)
                 updateScreen(screen, room)
                 pass
-            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_3):
+            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_i):
                 # screen.fill((128,0,0))
                 room.skor[len(room.skor)-1][TEAM_RIGHT] += 1
                 checkService(room)
                 updateScreen(screen, room)
                 pass
-            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_7):
+            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_s):
                 # screen.fill((128,0,0))
                 room.skor[len(room.skor)-1][TEAM_LEFT] -= 1
                 checkService(room)
                 updateScreen(screen, room)
                 pass
-            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_9):
+            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_k):
                 # screen.fill((128,0,0))
                 room.skor[len(room.skor)-1][TEAM_RIGHT] -= 1
                 checkService(room)
                 updateScreen(screen, room)
                 pass
-            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_5):
+            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN):
                 # screen.fill((128,0,0))
                 room.skor.append([0,0])
                 checkService(room)
                 updateScreen(screen, room)
                 print(room.skor)
                 pass
-            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_r):
+            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_n):
                 # screen.fill((128,0,0))
                 room.reset()
                 checkService(room)
                 updateScreen(screen, room)
                 pass
-            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_s):
+            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_t):
                 # screen.fill((128,0,0))
                 changeCourt(room)
                 updateScreen(screen, room)

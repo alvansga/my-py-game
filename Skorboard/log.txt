@@ -3,3 +3,18 @@ just for linux
 apt install python3-pygame python3-evdev 
 
 there are problems when installing package from pip 
+
+how to use:
+> activate nec on rc 
+> export DISPLAY=":0"
+> run python main.py
+
+how to operate remote:
+> 1 = +1 left side
+> 3 = +1 right side 
+> 7 = -1 left side
+> 9 = -1 right side 
+
+> 5 = set match 
+> 0 = toggle change court 
+> prdown = reset score
