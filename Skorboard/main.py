@@ -1,7 +1,6 @@
 # import the pygame module, so you can use it
 import evdev
 dev = evdev.InputDevice('/dev/input/event3')
-import time
 
 from Game import *
 
@@ -39,7 +38,7 @@ def main():
     running = True
     
     room = Game("TT", 2)
-    stamp_time = time.time()
+    stamp_time = pygame.time.get_ticks() #time.time()
 
     # main loop
     while running:
@@ -104,9 +103,9 @@ def main():
                 pass
 
         for event in dev.read_loop():
-            if time.time() - stamp_time < 0.5:
+            if pygame.time.get_ticks() - stamp_time < 200: #200ms
                 break
-            stamp_time = time.time()
+            stamp_time = pygame.time.get_ticks()
             
             if hex(event.value) == "0x0":
                 continue

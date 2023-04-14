@@ -74,7 +74,7 @@ class Game():
         skorlist = ""
         try:
             for i in range(len(game.skor) - 1):
-                skorlist += str(game.skor[i][0]) + "-" + str(game.skor[i][1]) + " "
+                skorlist += str(game.skor[i][0]) + "-" + str(game.skor[i][1]) + " / "
         except:
             pass
         text = font.render(skorlist, True, SKORLIST_COLOR)
