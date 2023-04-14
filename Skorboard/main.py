@@ -42,7 +42,7 @@ def main():
 
     # main loop
     while running:
-        #print(".")
+        # print(".")
         room.updateScreen(screen)
         # event handling, gets all event from the event queue
         for event in pygame.event.get():
@@ -102,9 +102,11 @@ def main():
                 print(room.skor)
                 pass
 
-        for event in dev.read_loop():
+        # for event in dev.read_loop():
+        event = dev.read_one()
+        if event:
             if pygame.time.get_ticks() - stamp_time < 200: #200ms
-                break
+                pass
             stamp_time = pygame.time.get_ticks()
             
             if hex(event.value) == "0x0":
@@ -125,41 +127,41 @@ def main():
             elif hex(event.value) == IRKEY_RIGHT:
                 # screen.fill((0,0,128))
                 room.serv = -1
-                break
+                pass
             elif hex(event.value) == IRKEY_LEFT:
                 # screen.fill((128,0,128))
                 room.serv = 0
-                break
+                pass
             elif hex(event.value) == IRKEY_NUM1:
                 # screen.fill((0,128,0))
                 room.skor[len(room.skor)-1][TEAM_LEFT] += 1
                 room.checkService()
-                break
+                pass
             elif hex(event.value) == IRKEY_NUM3:
                 room.skor[len(room.skor)-1][TEAM_RIGHT] += 1
                 room.checkService()
-                break
+                pass
             elif hex(event.value) == IRKEY_NUM7:
                 room.skor[len(room.skor)-1][TEAM_LEFT] -= 1
                 room.checkService()
-                break
+                pass
             elif hex(event.value) == IRKEY_NUM9:
                 room.skor[len(room.skor)-1][TEAM_RIGHT] -= 1
                 room.checkService()
-                break
+                pass
             elif hex(event.value) == IRKEY_NUM5:
                 room.skor.append([0,0])
                 room.checkService()
                 print(room.skor)
-                break
+                pass
             elif hex(event.value) == IRKEY_PRDOWN:
                 room.reset()
                 room.checkService()
-                break
+                pass
             elif hex(event.value) == IRKEY_NUM0:
                 room.changeCourt()
                 print(room.skor)
-                break
+                pass
         #     print("\nCode:",hex(event.value))
         #     print("---------------")
             pass
