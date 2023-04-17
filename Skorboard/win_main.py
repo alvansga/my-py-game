@@ -2,6 +2,15 @@
 from Game import *
 # import evdev
 # dev = evdev.InputDevice('/dev/input/event3')
+import sys 
+try:
+    SPORT = sys.argv[1]
+except:
+    SPORT = "TT"
+try:
+    CHGSERV = int(sys.argv[2])
+except:
+    CHGSERV = 2
 
 # define a main function
 def main():
@@ -18,11 +27,25 @@ def main():
     # define a variable to control the main loop
     running = True
     
-    room = Game("TT",2)
+    room = Game(SPORT, CHGSERV)
+
+    start_time = pygame.time.get_ticks()
+    time_hms = 0, 0
+    timer_font = pygame.font.SysFont("freesansbold", 38)
+    timer_surf = timer_font.render(f'{time_hms[0]:02d}:{time_hms[1]:02d}', True, (255, 255, 255))
 
     # main loop
     while running:
         room.updateScreen(screen)
+
+        time_ms = pygame.time.get_ticks() - start_time
+        new_hms = (time_ms//(1000*60)), (time_ms//1000)%60
+        if new_hms != time_hms:
+            time_hms = new_hms
+            timer_surf = timer_font.render(f'{time_hms[0]:02d}:{time_hms[1]:02d}', True, (255, 255, 255))
+        screen.blit(timer_surf, (1280, 4))
+
+        pygame.display.flip()
         # event handling, gets all event from the event queue
         for event in pygame.event.get():
             # only do something if the event is of type QUIT
@@ -48,19 +71,25 @@ def main():
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_w):
                 room.skor[len(room.skor)-1][TEAM_LEFT] += 1
-                room.checkService()
+                if room.sport == "TT":
+                    room.checkService()
+                else:
+                    room.checkService(0)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_i):
                 room.skor[len(room.skor)-1][TEAM_RIGHT] += 1
-                room.checkService()
+                if room.sport == "TT":
+                    room.checkService()
+                else:
+                    room.checkService(-1)
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_s):
                 room.skor[len(room.skor)-1][TEAM_LEFT] -= 1
-                room.checkService()
+                # room.checkService()
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_k):
                 room.skor[len(room.skor)-1][TEAM_RIGHT] -= 1
-                room.checkService()
+                # room.checkService()
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN):
                 room.skor.append([0,0])
@@ -69,6 +98,7 @@ def main():
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_n):
                 room.reset()
+                start_time = pygame.time.get_ticks()
                 room.checkService()
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_t):

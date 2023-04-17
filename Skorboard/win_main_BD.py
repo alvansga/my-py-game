@@ -23,6 +23,7 @@ def main():
     # main loop
     while running:
         room.updateScreen(screen)
+        pygame.display.flip()
         # event handling, gets all event from the event queue
         for event in pygame.event.get():
             # only do something if the event is of type QUIT

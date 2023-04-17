@@ -38,12 +38,27 @@ def main():
     running = True
     
     room = Game("BD")
-    stamp_time = pygame.time.get_ticks()
+    stamp_time = pygame.time.get_ticks() #time.time()
+
+    start_time = pygame.time.get_ticks()
+    time_hms = 0, 0
+    timer_font = pygame.font.SysFont("freesansbold", 38)
+    timer_surf = timer_font.render(f'{time_hms[0]:02d}:{time_hms[1]:02d}', True, (255, 255, 255))
 
     # main loop
     while running:
-        #print(".")
+        # print(".")
         room.updateScreen(screen)
+
+        time_ms = pygame.time.get_ticks() - start_time
+        new_hms = (time_ms//(1000*60)), (time_ms//1000)%60
+        if new_hms != time_hms:
+            time_hms = new_hms
+            timer_surf = timer_font.render(f'{time_hms[0]:02d}:{time_hms[1]:02d}', True, (255, 255, 255))
+        screen.blit(timer_surf, (1300, 4))
+
+        pygame.display.flip()
+        
         # event handling, gets all event from the event queue
         for event in pygame.event.get():
             # only do something if the event is of type QUIT
@@ -102,9 +117,11 @@ def main():
                 print(room.skor)
                 pass
 
-        for event in dev.read_loop():
-            if pygame.time.get_ticks() - stamp_time < 200:
-                break
+        # for event in dev.read_loop():
+        event = dev.read_one()
+        if event:
+            if pygame.time.get_ticks() - stamp_time < 200: #200ms
+                continue
             stamp_time = pygame.time.get_ticks()
             
             if hex(event.value) == "0x0":
@@ -125,41 +142,42 @@ def main():
             elif hex(event.value) == IRKEY_RIGHT:
                 # screen.fill((0,0,128))
                 room.serv = -1
-                break
+                pass
             elif hex(event.value) == IRKEY_LEFT:
                 # screen.fill((128,0,128))
                 room.serv = 0
-                break
+                pass
             elif hex(event.value) == IRKEY_NUM1:
                 # screen.fill((0,128,0))
                 room.skor[len(room.skor)-1][TEAM_LEFT] += 1
                 room.checkService(0)
-                break
+                pass
             elif hex(event.value) == IRKEY_NUM3:
                 room.skor[len(room.skor)-1][TEAM_RIGHT] += 1
                 room.checkService(-1)
-                break
+                pass
             elif hex(event.value) == IRKEY_NUM7:
                 room.skor[len(room.skor)-1][TEAM_LEFT] -= 1
                 room.checkService(0)
-                break
+                pass
             elif hex(event.value) == IRKEY_NUM9:
                 room.skor[len(room.skor)-1][TEAM_RIGHT] -= 1
                 room.checkService(-1)
-                break
+                pass
             elif hex(event.value) == IRKEY_NUM5:
                 room.skor.append([0,0])
                 room.checkService()
                 print(room.skor)
-                break
+                pass
             elif hex(event.value) == IRKEY_PRDOWN:
+                start_time = pygame.time.get_ticks()
                 room.reset()
                 room.checkService()
-                break
+                pass
             elif hex(event.value) == IRKEY_NUM0:
                 room.changeCourt()
                 print(room.skor)
-                break
+                pass
         #     print("\nCode:",hex(event.value))
         #     print("---------------")
             pass

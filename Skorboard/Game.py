@@ -88,4 +88,4 @@ class Game():
         elif game.serv == -1:
             pygame.draw.circle(screen, CIRCLE_COLOR, (WIN_WIDTH//2 + WIN_HEIGTH//24, WIN_HEIGTH//12//2 + WIN_HEIGTH//24), WIN_HEIGTH//32)
 
-        pygame.display.flip()
+        # pygame.display.flip()
