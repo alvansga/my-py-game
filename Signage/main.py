@@ -4,12 +4,14 @@ from urllib.request import urlopen
 import io
 
 import evdev
-dev = evdev.InputDevice('/dev/input/event3')
+dev = evdev.InputDevice('/dev/input/event0')
 
 IRKEY_UP = "0x800c"
 IRKEY_DOWN = "0x800d"
 IRKEY_RIGHT = "0x800e"
 IRKEY_LEFT = "0x800f"
+
+IRKEY_SELECT = "0x8014"
 
 IRKEY_NUM1 = "0x8001"
 IRKEY_NUM2 = "0x8002"
@@ -20,6 +22,8 @@ IRKEY_NUM6 = "0x8006"
 IRKEY_NUM7 = "0x8007"
 IRKEY_NUM8 = "0x8008"
 IRKEY_NUM9 = "0x8009"
+
+IRKEY_STOP = "0x801f"
 
 # define a main function
 def main():
@@ -32,31 +36,19 @@ def main():
     # create a surface on screen that has the size of 240 x 180
     screen = pygame.display.set_mode((1366,768), pygame.FULLSCREEN)
 
-
     # image_url = "http://matplotlib.org/_images/fill_demo.png"
-      
+    
     list_image = list()
+    for i in range(1,27):
+        image_url = "https://alvansga.github.io/img/res/pic%20("+ str(i) + ").jpg"
+        image_str = urlopen(image_url).read()
+        list_image.append(image_str)
     
-    
-    image_url = "https://alvansga.github.io/img/res/pic%20(2).jpg"
-    image_str = urlopen(image_url).read()
-    image_file = io.BytesIO(image_str)
-    list_image.append(image_file)
-
-    image_url = "https://alvansga.github.io/img/res/pic%20(6).jpg"
-    image_str = urlopen(image_url).read()
-    image_file = io.BytesIO(image_str)
-    list_image.append(image_file)
-
-    image_url = "https://alvansga.github.io/img/res/pic%20(9).jpg"
-    image_str = urlopen(image_url).read()
-    image_file = io.BytesIO(image_str)
-    list_image.append(image_file)
-
     idx = 0
-    print(list_image)
+    # print(list_image)
 
-    image = pygame.image.load(list_image[idx])
+    image_file = io.BytesIO(list_image[idx])
+    image = pygame.image.load(image_file)
     image = pygame.transform.scale(image, (1366,768))
      
     # define a variable to control the main loop
@@ -83,7 +75,6 @@ def main():
         # for event in dev.read_loop():
         event = dev.read_one()
         if event:
-            print(list_image, idx)
             if pygame.time.get_ticks() - stamp_time < 200: #200ms
                 continue
             stamp_time = pygame.time.get_ticks()
@@ -91,98 +82,104 @@ def main():
             if hex(event.value) == "0x0":
                 continue
             elif hex(event.value) == IRKEY_NUM1:
-                image_url = "https://alvansga.github.io/img/res/pic%20(11).jpg"
-                image_str = urlopen(image_url).read()
-                image_file = io.BytesIO(image_str)
+                image_file = io.BytesIO(list_image[10])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (1366,768))
             elif hex(event.value) == IRKEY_NUM2:
-                image_url = "https://alvansga.github.io/img/res/pic%20(12).jpg"
-                image_str = urlopen(image_url).read()
-                image_file = io.BytesIO(image_str)
+                image_file = io.BytesIO(list_image[11])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (1366,768))
             elif hex(event.value) == IRKEY_NUM3:
-                image_url = "https://alvansga.github.io/img/res/pic%20(13).jpg"
-                image_str = urlopen(image_url).read()
-                image_file = io.BytesIO(image_str)
+                image_file = io.BytesIO(list_image[12])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (1366,768))
             elif hex(event.value) == IRKEY_NUM4:
-                image_url = "https://alvansga.github.io/img/res/pic%20(14).jpg"
-                image_str = urlopen(image_url).read()
-                image_file = io.BytesIO(image_str)
+                image_file = io.BytesIO(list_image[13])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (1366,768))
             elif hex(event.value) == IRKEY_NUM5:
-                image_url = "https://alvansga.github.io/img/res/pic%20(15).jpg"
-                image_str = urlopen(image_url).read()
-                image_file = io.BytesIO(image_str)
+                image_file = io.BytesIO(list_image[14])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (1366,768))
             elif hex(event.value) == IRKEY_NUM6:
-                image_url = "https://alvansga.github.io/img/res/pic%20(16).jpg"
-                image_str = urlopen(image_url).read()
-                image_file = io.BytesIO(image_str)
+                image_file = io.BytesIO(list_image[15])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (1366,768))
             elif hex(event.value) == IRKEY_NUM7:
-                image_url = "https://alvansga.github.io/img/res/pic%20(17).jpg"
-                image_str = urlopen(image_url).read()
-                image_file = io.BytesIO(image_str)
+                image_file = io.BytesIO(list_image[16])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (1366,768))
             elif hex(event.value) == IRKEY_NUM8:
-                image_url = "https://alvansga.github.io/img/res/pic%20(18).jpg"
-                image_str = urlopen(image_url).read()
-                image_file = io.BytesIO(image_str)
+                image_file = io.BytesIO(list_image[17])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (1366,768))
             elif hex(event.value) == IRKEY_NUM9:
-                image_url = "https://alvansga.github.io/img/res/pic%20(19).jpg"
-                image_str = urlopen(image_url).read()
-                image_file = io.BytesIO(image_str)
+                image_file = io.BytesIO(list_image[18])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (1366,768))
 
             elif hex(event.value) == IRKEY_UP:
                 # screen.fill((128,0,0))
-                image_url = "https://alvansga.github.io/img/res/pic%20(2).jpg"
-                image_str = urlopen(image_url).read()
-                image_file = io.BytesIO(image_str)
-                image = pygame.image.load(image_file)
-                image = pygame.transform.scale(image, (1366,768))
+                # image_url = "https://alvansga.github.io/img/res/pic%20(2).jpg"
+                # image_str = urlopen(image_url).read()
+                # image_file = io.BytesIO(image_str)
+                # image = pygame.image.load(image_file)
+                # image = pygame.transform.scale(image, (1366,768))
                 pass
             elif hex(event.value) == IRKEY_DOWN:
                 # screen.fill((0,128,0))
-                image_url = "https://alvansga.github.io/img/res/pic%20(21).jpg"
-                image_str = urlopen(image_url).read()
-                image_file = io.BytesIO(image_str)
-                image = pygame.image.load(image_file)
-                image = pygame.transform.scale(image, (1366,768))
+                # image_url = "https://alvansga.github.io/img/res/pic%20(21).jpg"
+                # image_str = urlopen(image_url).read()
+                # image_file = io.BytesIO(image_str)
+                # image = pygame.image.load(image_file)
+                # image = pygame.transform.scale(image, (1366,768))
                 pass
             elif hex(event.value) == IRKEY_RIGHT:
-                # idx += 1
-                # if idx == len(list_image):
-                #     idx = 0
-                # print("inc idx --> ",idx)
-                image_url = "https://alvansga.github.io/img/res/pic%20(5).jpg"
-                image_str = urlopen(image_url).read()
-                image_file = io.BytesIO(image_str)
+                idx += 1
+                if idx == len(list_image):
+                    idx = 0
+                print("inc idx --> ",idx)
+                
+                image_file = io.BytesIO(list_image[idx])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (1366,768))
                 pass
             elif hex(event.value) == IRKEY_LEFT:
-                # idx -= 1
-                # if idx < 0:
-                #     idx = len(list_image)-1
-                # print("dec idx --> ",idx)
-                image_url = "https://alvansga.github.io/img/res/pic%20(20).jpg"
-                image_str = urlopen(image_url).read()
-                image_file = io.BytesIO(image_str)
+                idx -= 1
+                if idx < 0:
+                    idx = len(list_image)-1
+                print("dec idx --> ",idx)
+
+                image_file = io.BytesIO(list_image[idx])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (1366,768))
                 pass
+            elif hex(event.value) == IRKEY_SELECT:
+                print("refreshing images...")
+                top = pygame.Surface((1366, 768//24))
+                top.set_alpha(128)
+                top.fill((0,0,0))
+                screen.blit(top,(0,0))
+
+                font = pygame.font.Font('freesansbold.ttf', 14)
+                txt_color = (255,255,255)
+                text = font.render("Please wait...", True, txt_color)
+                textRect = text.get_rect()
+                textRect.center = (1366//2, 768//24//2)
+                screen.blit(text, textRect)
+                pygame.display.flip()
+
+                list_image = list()
+                for i in range(1,27):
+                    image_url = "https://alvansga.github.io/img/res/pic%20("+ str(i) + ").jpg"
+                    image_str = urlopen(image_url).read()
+                    list_image.append(image_str)
+                print("done!")
+                pass
+
+            elif hex(event.value) == IRKEY_STOP:
+                running = False
+                
             print("\nCode:",hex(event.value))
             print("---------------")
             pass
