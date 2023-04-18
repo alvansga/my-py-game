@@ -144,6 +144,12 @@ def main():
                 image_file = io.BytesIO(list_image[idx])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (1366,768))
+
+                step = 1366 / 100
+                for i in range(100):
+                    screen.blit(image, (int(1366-i*step), 0))
+                    pygame.display.flip()
+
                 pass
             elif hex(event.value) == IRKEY_LEFT:
                 idx -= 1
@@ -154,6 +160,12 @@ def main():
                 image_file = io.BytesIO(list_image[idx])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (1366,768))
+
+                step = 1366 / 100
+                for i in range(100):
+                    screen.blit(image, (int(-1366+i*step), 0))
+                    pygame.display.flip()
+
                 pass
             elif hex(event.value) == IRKEY_SELECT:
                 print("refreshing images...")

@@ -34,7 +34,7 @@ def main():
 
     print("downloading images...")
     list_image = list()
-    for i in range(1,27):
+    for i in range(1,4):
         image_url = "https://alvansga.github.io/img/res/pic%20("+ str(i) + ").jpg"
         image_str = urlopen(image_url).read()
         list_image.append(image_str)
@@ -66,7 +66,7 @@ def main():
             if event.type == pygame.QUIT or (event.type == pygame.KEYDOWN and event.key == pygame.K_q):
                 # change the value to False, to exit the main loop
                 running = False
-            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_w):
+            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_d):
                 # image_url = "https://alvansga.github.io/img/res/pic%20(21).jpg"
                 # image_str = urlopen(image_url).read()
                 # image_file = io.BytesIO(image_str)
@@ -78,7 +78,13 @@ def main():
                 image_file = io.BytesIO(list_image[idx])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (800,600))
-            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_s):
+
+                step = 800 / 150
+                for i in range(150):
+                    screen.blit(image, (int(800-i*step), 0))
+                    pygame.display.flip()
+
+            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_a):
                 # image_url = "https://alvansga.github.io/img/res/pic%20(22).jpg"
                 # image_str = urlopen(image_url).read()
                 # image_file = io.BytesIO(image_str)
@@ -90,14 +96,20 @@ def main():
                 image_file = io.BytesIO(list_image[idx])
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (800,600))
-            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_a):
+
+                step = 800 / 150
+                for i in range(150):
+                    screen.blit(image, (int(-800+i*step), 0))
+                    pygame.display.flip()
+
+            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_w):
                 # image_url = "https://alvansga.github.io/img/res/pic%20(23).jpg"
                 # image_str = urlopen(image_url).read()
                 # image_file = io.BytesIO(image_str)
                 # image = pygame.image.load(image_file)
                 # image = pygame.transform.scale(image, (800,600))
                 pass
-            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_d):
+            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_s):
                 # image_url = "https://alvansga.github.io/img/res/pic%20(24).jpg"
                 # image_str = urlopen(image_url).read()
                 # image_file = io.BytesIO(image_str)
@@ -120,7 +132,7 @@ def main():
                 pygame.display.flip()
 
                 list_image = list()
-                for i in range(1,27):
+                for i in range(1,4):
                     image_url = "https://alvansga.github.io/img/res/pic%20("+ str(i) + ").jpg"
                     image_str = urlopen(image_url).read()
                     list_image.append(image_str)
