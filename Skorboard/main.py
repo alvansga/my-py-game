@@ -55,6 +55,8 @@ def main():
     timer_font = pygame.font.SysFont("freesansbold", 38)
     timer_surf = timer_font.render(f'{time_hms[0]:02d}:{time_hms[1]:02d}', True, (255, 255, 255))
 
+    pygame.mouse.set_visible(False)
+    
     # main loop
     while running:
         # print(".")

@@ -55,7 +55,8 @@ def main():
     running = True
 
     stamp_time = pygame.time.get_ticks()
-     
+    
+    pygame.mouse.set_visible(False)
     # main loop
     while running:
         try:
