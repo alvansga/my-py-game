@@ -21,6 +21,8 @@ IRKEY_NUM7 = "0x8007"
 IRKEY_NUM8 = "0x8008"
 IRKEY_NUM9 = "0x8009"
 
+WIDTH_WIN, HEIGHT_WIN = 800, 600
+
 # define a main function
 def main():
     print("pygame initializing...")
@@ -30,7 +32,7 @@ def main():
     pygame.display.set_caption("minimal program")
      
     # create a surface on screen that has the size of 240 x 180
-    screen = pygame.display.set_mode((800,600), )
+    screen = pygame.display.set_mode((WIDTH_WIN,HEIGHT_WIN), )
 
     print("downloading images...")
     list_image = list()
@@ -44,7 +46,7 @@ def main():
     # print(list_image)
     image_file = io.BytesIO(list_image[0])
     image = pygame.image.load(image_file)
-    image = pygame.transform.scale(image, (800,600))
+    image = pygame.transform.scale(image, (WIDTH_WIN,HEIGHT_WIN))
      
     # define a variable to control the main loop
     running = True
@@ -77,11 +79,11 @@ def main():
 
                 image_file = io.BytesIO(list_image[idx])
                 image = pygame.image.load(image_file)
-                image = pygame.transform.scale(image, (800,600))
+                image = pygame.transform.scale(image, (WIDTH_WIN,HEIGHT_WIN))
 
-                step = 800 / 150
+                step = WIDTH_WIN / 150
                 for i in range(150):
-                    screen.blit(image, (int(800-i*step), 0))
+                    screen.blit(image, (int(WIDTH_WIN-i*step), 0))
                     pygame.display.flip()
 
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_a):
@@ -95,11 +97,11 @@ def main():
 
                 image_file = io.BytesIO(list_image[idx])
                 image = pygame.image.load(image_file)
-                image = pygame.transform.scale(image, (800,600))
+                image = pygame.transform.scale(image, (WIDTH_WIN,HEIGHT_WIN))
 
-                step = 800 / 150
+                step = WIDTH_WIN / 150
                 for i in range(150):
-                    screen.blit(image, (int(-800+i*step), 0))
+                    screen.blit(image, (int(-WIDTH_WIN+i*step), 0))
                     pygame.display.flip()
 
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_w):
@@ -107,18 +109,18 @@ def main():
                 # image_str = urlopen(image_url).read()
                 # image_file = io.BytesIO(image_str)
                 # image = pygame.image.load(image_file)
-                # image = pygame.transform.scale(image, (800,600))
+                # image = pygame.transform.scale(image, (WIDTH_WIN,HEIGHT_WIN))
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_s):
                 # image_url = "https://alvansga.github.io/img/res/pic%20(24).jpg"
                 # image_str = urlopen(image_url).read()
                 # image_file = io.BytesIO(image_str)
                 # image = pygame.image.load(image_file)
-                # image = pygame.transform.scale(image, (800,600))
+                # image = pygame.transform.scale(image, (WIDTH_WIN,HEIGHT_WIN))
                 pass
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN):
                 print("refreshing images...")
-                top = pygame.Surface((800, 600//24))
+                top = pygame.Surface((WIDTH_WIN, HEIGHT_WIN//24))
                 top.set_alpha(128)
                 top.fill((0,0,0))
                 screen.blit(top,(0,0))
@@ -127,9 +129,23 @@ def main():
                 txt_color = (255,255,255)
                 text = font.render("Please wait...", True, txt_color)
                 textRect = text.get_rect()
-                textRect.center = (800//2, 600//24//2)
+                textRect.center = (WIDTH_WIN//2, HEIGHT_WIN//24//2)
                 screen.blit(text, textRect)
                 pygame.display.flip()
+
+                try:
+                    image_url = "https://alvansga.github.io/img/res/pic%20("+ str(1) + ").jpg"
+                    image_str = urlopen(image_url).read()
+                except:
+                    font = pygame.font.Font('freesansbold.ttf', 14)
+                    txt_color = (255,255,255)
+                    text = font.render("Connection error...", True, txt_color)
+                    textRect = text.get_rect()
+                    textRect.center = (WIDTH_WIN//2, HEIGHT_WIN//24//2)
+                    screen.blit(text, textRect)
+                    pygame.display.flip()
+                    pygame.time.delay(1000)
+                    break
 
                 list_image = list()
                 for i in range(1,4):
