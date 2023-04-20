@@ -22,6 +22,7 @@ IRKEY_NUM8 = "0x8008"
 IRKEY_NUM9 = "0x8009"
 
 WIDTH_WIN, HEIGHT_WIN = 800, 600
+SLIDESHOW_DELAY = 10000
 
 # define a main function
 def main():
@@ -50,8 +51,10 @@ def main():
      
     # define a variable to control the main loop
     running = True
+    slideshow = False
 
     stamp_time = pygame.time.get_ticks()
+    slideshow_start = pygame.time.get_ticks()
      
     # main loop
     while running:
@@ -61,6 +64,17 @@ def main():
             print("no image")
             pass
         pygame.display.flip()
+
+        if slideshow:
+            slideshow_delay = pygame.time.get_ticks() - slideshow_start
+            if slideshow_delay > SLIDESHOW_DELAY:
+                slideshow_start = pygame.time.get_ticks()
+                idx += 1
+                if idx == len(list_image):
+                    idx = 0
+                image_file = io.BytesIO(list_image[idx])
+                image = pygame.image.load(image_file)
+                image = pygame.transform.scale(image, (WIDTH_WIN,HEIGHT_WIN))
 
         # event handling, gets all event from the event queue
         for event in pygame.event.get():
@@ -81,10 +95,10 @@ def main():
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (WIDTH_WIN,HEIGHT_WIN))
 
-                step = WIDTH_WIN / 150
-                for i in range(150):
-                    screen.blit(image, (int(WIDTH_WIN-i*step), 0))
-                    pygame.display.flip()
+                # step = WIDTH_WIN / 150
+                # for i in range(150):
+                #     screen.blit(image, (int(WIDTH_WIN-i*step), 0))
+                #     pygame.display.flip()
 
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_a):
                 # image_url = "https://alvansga.github.io/img/res/pic%20(22).jpg"
@@ -99,10 +113,10 @@ def main():
                 image = pygame.image.load(image_file)
                 image = pygame.transform.scale(image, (WIDTH_WIN,HEIGHT_WIN))
 
-                step = WIDTH_WIN / 150
-                for i in range(150):
-                    screen.blit(image, (int(-WIDTH_WIN+i*step), 0))
-                    pygame.display.flip()
+                # step = WIDTH_WIN / 150
+                # for i in range(150):
+                #     screen.blit(image, (int(-WIDTH_WIN+i*step), 0))
+                #     pygame.display.flip()
 
             elif (event.type == pygame.KEYDOWN and event.key == pygame.K_w):
                 # image_url = "https://alvansga.github.io/img/res/pic%20(23).jpg"
@@ -154,6 +168,8 @@ def main():
                     list_image.append(image_str)
                 print("done!")
 
+            elif (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
+                slideshow = not slideshow
 
         # event = dev.read_one()
         # if event:
