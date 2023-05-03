@@ -24,6 +24,10 @@ IRKEY_NUM9 = "0x8009"
 WIDTH_WIN, HEIGHT_WIN = 800, 600
 SLIDESHOW_DELAY = 10000
 
+REPO_IMAGE = "https://raw.githubusercontent.com/alvansga/my-py-game/project/Signage/resources/"
+NAME_OF_IMAGE_START = "pic%20("
+NAME_OF_IMAGE_END = ").jpg"
+
 # define a main function
 def main():
     print("pygame initializing...")
@@ -38,7 +42,8 @@ def main():
     print("downloading images...")
     list_image = list()
     for i in range(1,4):
-        image_url = "https://alvansga.github.io/img/res/pic%20("+ str(i) + ").jpg"
+        image_url = REPO_IMAGE + NAME_OF_IMAGE_START + str(i) + NAME_OF_IMAGE_END
+        print(image_url)
         image_str = urlopen(image_url).read()
         list_image.append(image_str)
 
@@ -148,7 +153,7 @@ def main():
                 pygame.display.flip()
 
                 try:
-                    image_url = "https://alvansga.github.io/img/res/pic%20("+ str(1) + ").jpg"
+                    image_url = REPO_IMAGE + NAME_OF_IMAGE_START + str(1) + NAME_OF_IMAGE_END
                     image_str = urlopen(image_url).read()
                 except:
                     font = pygame.font.Font('freesansbold.ttf', 14)
@@ -163,7 +168,7 @@ def main():
 
                 list_image = list()
                 for i in range(1,4):
-                    image_url = "https://alvansga.github.io/img/res/pic%20("+ str(i) + ").jpg"
+                    image_url = REPO_IMAGE + NAME_OF_IMAGE_START + str(1) + NAME_OF_IMAGE_END
                     image_str = urlopen(image_url).read()
                     list_image.append(image_str)
                 print("done!")

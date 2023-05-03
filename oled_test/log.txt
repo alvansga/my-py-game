@@ -1,0 +1,8 @@
+use in orange pi
+ link: https://learn.adafruit.com/monochrome-oled-breakouts/python-setup
+
+pip install adafruit-circuitpython-ssd1306
+pip install gpiod
+
+use root 
+
