@@ -32,7 +32,7 @@ def main():
     start_time = pygame.time.get_ticks()
     time_hms = 0, 0
     timer_font = pygame.font.SysFont("freesansbold", 38)
-    timer_surf = timer_font.render(f'{time_hms[0]:02d}:{time_hms[1]:02d}', True, (255, 255, 255))
+    timer_surf = timer_font.render(str(time_hms[0]//10) + str(time_hms[0]%10) + ":" + str(time_hms[1]//10) + str(time_hms[1]%10), True, (255, 255, 255))
 
     # main loop
     while running:
@@ -42,7 +42,7 @@ def main():
         new_hms = (time_ms//(1000*60)), (time_ms//1000)%60
         if new_hms != time_hms:
             time_hms = new_hms
-            timer_surf = timer_font.render(f'{time_hms[0]:02d}:{time_hms[1]:02d}', True, (255, 255, 255))
+            timer_surf = timer_font.render(str(time_hms[0]//10) + str(time_hms[0]%10) + ":" + str(time_hms[1]//10) + str(time_hms[1]%10), True, (255, 255, 255))
         screen.blit(timer_surf, (1280, 4))
 
         pygame.display.flip()
